@@ -22,10 +22,10 @@ int startNano; // time when it was forked
 };
 struct PCB processTable[20];
 
-void printRandoms(int one, int timelimit, int timer)
+void printRandoms(int one, int timelimit, int numAmount)
 {
     int i;
-    for (i = 0; i < timer; i++){
+    for (i = 0; i < one; i++){
         int num = (rand() % (timelimit - one + 1)) + one;
         printf("This is your random number: %d \n\n", num);
     }
@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
 	//bound of time that a child process will be launched for (t)
 	int timelimit= 2;
     int one = 1;
-    int timer = 2;
+    int numAmount = 1;
 
     //Parse through command line options
 	char opt;
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]){
 
     //Create random second and nanosecond from user input
     srand(time(0));
-    printRandoms(one, timelimit, timer);
+    printRandoms(one, timelimit, numAmount);
 
 return 0;
 }
