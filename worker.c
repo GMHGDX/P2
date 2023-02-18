@@ -1,1 +1,4 @@
-//This is definitely the coolest worker.c file
+int main(int argc, char *argv[]){
+printf("hello there from worker");
+    return 0;
+}
