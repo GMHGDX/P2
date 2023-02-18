@@ -22,14 +22,15 @@ int startNano; // time when it was forked
 };
 struct PCB processTable[20];
 
-int randomNumberGenerator(int timelimit, int nanolimit)
+int randomNumberGenerator(int limit)
 {
-    int i;
+    // int i;
     int sec;
-        sec = (rand() % (timelimit)) + 1;
-        printf("This is your random number: %d \n\n", sec);
-        sec = ((rand() % (nanolimit)) + 1);
-        printf("This is your random nano second:");
+    // int nanosec;
+    sec = (rand() % (limit)) + 1;
+    // printf("This is your random number: %d \n\n", sec);
+    // nanosec = ((rand() % (nanolimit)) + 1);
+    // printf("This is your random nano second: %d \n", nanosec);
 
     return sec;
 }
@@ -82,8 +83,11 @@ int main(int argc, char *argv[]){
     }
 
     //Create random second and nanosecond from user input
-    srand(time(0));
-    randomNumberGenerator(timelimit, nanolimit);
+    //srand(time(0));
+    int sec = randomNumberGenerator(timelimit);
+    printf("This is your random number: %d \n\n", sec);
+    int nanosec = randomNumberGenerator(nanolimit);
+    printf("This is your nanosec: %d \n\n", nanosec);
 
 return 0;
 }
