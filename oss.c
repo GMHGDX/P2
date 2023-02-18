@@ -9,7 +9,27 @@
 #include <stdlib.h> //EXIT_FAILURE
 #include <unistd.h> //for pid_t and exec
 #include <sys/types.h>
+#include <time.h> // to create random time
+//#include <sys/shm.h> //Shared memory
+
 //#include <sys/wait.h>
+
+struct PCB {
+int occupied; // either true or false
+pid_t pid; // process id of this child
+int startSeconds; // time when it was forked
+int startNano; // time when it was forked
+};
+struct PCB processTable[20];
+
+void printRandoms(int lower, int upper, int count)
+{
+    int i;
+    for (i = 0; i < count; i++){
+        int num = (rand() % (upper - lower + 1)) + lower;
+        printf("%d ", num);
+    }
+}
 
 int main(int argc, char *argv[]){
 	//number of total children to launch (n)
@@ -17,7 +37,9 @@ int main(int argc, char *argv[]){
 	//how many children run at the same time (s)
 	int simul = 1;
 	//bound of time that a child process will be launched for (t)
-	int timelimit= 1;
+	int timelimit= 2;
+    int one = 1;
+    int time = 2;
 
     //Parse through command line options
 	char opt;
@@ -33,25 +55,32 @@ int main(int argc, char *argv[]){
                     printf("\t-n = number of total children to launch\n");
                     printf("\t-s = how many children run at the same time\n");
                     printf("\t-t = bound of time that a child process will be launched for\n\n");   
-                    printf("If you leave out a '-n', '-s', or '-t' in the command line prompt it will defualt to the value 1\n\n");
+                    printf("If you leave out a '-n', '-s', or '-t' in the command line prompt it will defualt to the value 1 for all except  -t, which will be 2\n\n");
                     printf("Have fun :)\n\n");
 
                     exit(0);
             break;
         case 'n':
             proc = atoi(optarg);
-			//printf("proc,n: %i \n", proc);
+			printf("proc,n: %i \n", proc);
             break;
         case 's':
             simul = atoi(optarg);
-			//printf("simul,s: %i \n", simul);
+			printf("simul,s: %i \n", simul);
             break;
         case 't':
             timelimit = atoi(optarg);
-			//printf("timelimit,t: %i \n", timelimit);
+			printf("timelimit,t: %i \n", timelimit);
             break;
         default:
             printf ("Invalid option %c \n", optopt);
             return (EXIT_FAILURE);
         }
     }
+
+    //Create random second and nanosecond from user input
+    srand(time(0));
+    printRandoms(one, timelimit, time);
+
+return 0;
+}
