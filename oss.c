@@ -27,7 +27,7 @@ void printRandoms(int one, int timelimit, int timer)
     int i;
     for (i = 0; i < timer; i++){
         int num = (rand() % (timelimit - one + 1)) + one;
-        printf("%d ", num);
+        printf("This is your random number: %d \n\n", num);
     }
 }
 
