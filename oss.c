@@ -83,7 +83,7 @@ int main(int argc, char *argv[]){
     }
 
     //Create random second and nanosecond from user input
-    //srand(time(0));
+    srand(time(0));
     int sec = randomNumberGenerator(timelimit);
     printf("This is your random number: %d \n\n", sec);
     int nanosec = randomNumberGenerator(nanolimit);
