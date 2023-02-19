@@ -2,7 +2,7 @@
 #include <sys/shm.h> //Shared memory
 
 int main(int argc, char *argv[]){
-    printf("hello there from worker");
+    printf("hello there from worker \n");
     int sh_key = atoi(argv[1]);
     printf("Child got sh_key: %i", sh_key);
 

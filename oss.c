@@ -132,7 +132,7 @@ int main(int argc, char *argv[]){
         snprintf(sh_key_string, sizeof(sh_key), "%i", sh_key);
 
         //exec function to send children to worker
-        char *args[] = {"worker", sh_key, NULL};
+        char *args[] = {"worker", sh_key_string, NULL};
         execvp("./worker", args);
         return 1;
         printf("Brydens a nice person");
