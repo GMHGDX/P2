@@ -19,8 +19,8 @@
 struct PCB {
 int occupied; // either true or false
 pid_t pid; // process id of this child
-int startSeconds; // time when it was forked
-int startNano; // time when it was forked
+time_t sec; // time when it was forked
+long nano; // time when it was forked
 };
 struct PCB processTable[20];
 
@@ -44,9 +44,9 @@ int main(int argc, char *argv[]){
     int nanolimit = 32000;
 
     //My cock 
-    clock_t start, end;
+    struct PCB start, end;
     uint64_t nanosecond;
-    time_t   second;  
+    time_t second;
 
     //child process ID
     pid_t childpid;
@@ -123,9 +123,10 @@ int main(int argc, char *argv[]){
 	sleep(5);	/* do stuff */
 	clock_gettime(CLOCK_REALTIME, &end);	/* mark the end time */
     
-    second = (end.second - start.second) + (end.nanosecond - start.nanosecond);
-    nanosecond = BILLION * (end.second - start.second) + end.nanosecond - start.nanosecond;
-	printf("elapsed time = %llu nanoseconds\n", (long long unsigned int) nanosecond);
+    second = (end.sec - start.sec) + (end.nano - start.nano);
+    nanosecond = BILLION * (end.sec - start.sec) + end.nano - start.nano;
+	
+    printf("elapsed time = %llu nanoseconds\n", (long long unsigned int) nanosecond);
     printf("elapsed time = %llu seconds\n", (int) second);
     
     int i; 
