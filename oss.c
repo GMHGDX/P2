@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
     int nanolimit = 32000;
 
     //child process ID
-    pid_t pid;
+    pid_t childpid;
 
     //Parse through command line options
 	char opt;
