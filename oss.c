@@ -42,6 +42,9 @@ int main(int argc, char *argv[]){
     int numAmount = 1;
     int nanolimit = 32000;
 
+    //child process ID
+    pid_t pid;
+
     //Parse through command line options
 	char opt;
     while((opt = getopt(argc, argv, "hn:s:t:")) != -1 )
@@ -90,6 +93,7 @@ int main(int argc, char *argv[]){
     //Create shared memory
     //my key and random number
     const int sh_key = 3147550;
+   
 
     //shared memory id associated with our key 
     // shmget()
@@ -109,12 +113,33 @@ int main(int argc, char *argv[]){
         fprintf(stderr,"Shared memory attach failed\n");
         exit(1);
     }
+
     int i; 
-    int counter = 0;
     for(i = 0; i < 5; i++){
         *shm_ptr = 10 + i;
         printf("Parent: Written Val.: %d\n", *shm_ptr);
     }
+
+    childpid = fork();
+    if (childpid == -1) {
+        perror("Failed to fork");
+        return 1;
+    }
+
+    if (childpid == 0){ //child code
+        //convert iter into a string in order to use it in the exec function
+        char sh_key_string[50];
+        snprintf(sh_key_string, sizeof(sh_key), "%i", sh_key);
+
+        //exec function to send children to worker
+        char *args[] = {"worker", sh_key, NULL};
+        execvp("./worker", args);
+        return 1;
+        printf("Brydens a nice person");
+    }
+
+    int stat;
+    wait(&stat);    //Wait for child process to finish before deleting the memory
 
     shmdt( shm_ptr ); // Detach from the shared memory segment
     shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id

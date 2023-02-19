@@ -1,5 +1,26 @@
+#include <stdio.h>
+#include <sys/shm.h> //Shared memory
+
 int main(int argc, char *argv[]){
-printf("hello there from worker");
+    printf("hello there from worker");
+    int sh_key = atoi(argv[1]);
+    printf("Child got sh_key: %i", sh_key);
+
+
+    int shm_id = shmget(sh_key, sizeof(int)*10, 0666);
+    if(shm_id <= 0) {
+        fprintf(stderr,"CHILD ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
+        exit(1);
+    }
+
+    //attatch memory we allocated to our process and point pointer to it
+    int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
+    if (shm_ptr <= 0) {
+        fprintf(stderr,"Child Shared memory attach failed\n");
+        exit(1);
+    }
+    printf("Child: Read Value: %d\n", *shm_ptr);
+
     return 0;
 //     WORKER PID:6577 PPID:6576 SysClockS: 5 SysclockNano: 1000 TermTimeS: 11 TermTimeNano: 500100
 // --Just Starting
