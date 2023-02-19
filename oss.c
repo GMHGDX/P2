@@ -12,7 +12,7 @@
 #include <time.h> // to create system time
 #include <sys/shm.h> //Shared memory
 
-#include <cstdint>
+#include <stdint.h> 
 
 #define BILLION 1000000000L
 
