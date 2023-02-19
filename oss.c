@@ -9,8 +9,10 @@
 #include <stdlib.h> //EXIT_FAILURE
 #include <unistd.h> //for pid_t and exec
 #include <sys/types.h>
-#include <time.h> // to create random time
+#include <time.h> // to create system time
 #include <sys/shm.h> //Shared memory
+
+#define BILLION 1000000000L
 
 //#include <sys/wait.h>
 
@@ -39,8 +41,12 @@ int main(int argc, char *argv[]){
 	int simul = 1;
 	//bound of time that a child process will be launched for (t)
 	int timelimit= 2;
-    int numAmount = 1;
     int nanolimit = 32000;
+
+    //My cock 
+    clock_t start, end;
+    uint64_t nanosecond;
+    time_t   second;  
 
     //child process ID
     pid_t childpid;
@@ -87,20 +93,15 @@ int main(int argc, char *argv[]){
 
     int seconds = randomNumberGenerator(timelimit);
     printf("This is your random number: %d \n\n", seconds);
+
     int nanoseconds = randomNumberGenerator(nanolimit);
     printf("This is your nanosec: %d \n\n", nanoseconds);
+
+
 /////////////////////////////////////////////////////////
     //Create shared memory
-    //my key and random number
     const int sh_key = 3147550;
-   
 
-    //shared memory id associated with our key 
-    // shmget()
-
-    //ask for certain byes, and permissions
-    //ipc_creat = create it anew (in a positive way)
-    //666 = user/group/other has read & write permissions
     int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
@@ -114,20 +115,35 @@ int main(int argc, char *argv[]){
         exit(1);
     }
 
+    shmdt( shm_ptr ); // Detach from the shared memory segment
+    shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
+
+    //Create system clock in shared memory
+    clock_gettime(CLOCK_REALTIME, &start);	/* mark start time */
+	sleep(5);	/* do stuff */
+	clock_gettime(CLOCK_REALTIME, &end);	/* mark the end time */
+    
+    second = (end.second - start.second) + (end.nanosecond - start.nanosecond);
+    nanosecond = BILLION * (end.second - start.second) + end.nanosecond - start.nanosecond;
+	printf("elapsed time = %llu nanoseconds\n", (long long unsigned int) nanosecond);
+    printf("elapsed time = %llu seconds\n", (int) second);
+    
     int i; 
     for(i = 0; i < 5; i++){
         *shm_ptr = 10 + i;
         printf("Parent: Written Val.: %d\n", *shm_ptr);
     }
 
+
+    //fork child processes
     childpid = fork();
     if (childpid == -1) {
         perror("Failed to fork");
         return 1;
     }
-
-    if (childpid == 0){ //child code
-        //convert iter into a string in order to use it in the exec function
+    
+    //send shared memory key to use in worker
+    if (childpid == 0){ 
         char sh_key_string[50];
         snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
 
@@ -143,6 +159,7 @@ int main(int argc, char *argv[]){
 
     shmdt( shm_ptr ); // Detach from the shared memory segment
     shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
+
 ///////////////////////////////////////////////////////////
 
 //Loop to check for terminated children
