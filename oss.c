@@ -21,8 +21,8 @@
 struct PCB {
 int occupied; // either true or false
 pid_t pid; // process id of this child
-time_t sec; // time when it was forked
-long nano; // time when it was forked
+int startSeconds; // time when it was forked
+int startNano; // time when it was forked
 };
 struct PCB processTable[20];
 
@@ -46,9 +46,9 @@ int main(int argc, char *argv[]){
     int nanolimit = 32000;
 
     //My cock 
-    struct PCB start, end;
-    uint64_t nanosecond;
-    time_t second;
+    // struct PCB start, end;
+    // uint64_t nanosecond;
+    // time_t second;
 
     //child process ID
     pid_t childpid;
@@ -117,20 +117,27 @@ int main(int argc, char *argv[]){
         exit(1);
     }
 
-    shmdt( shm_ptr ); // Detach from the shared memory segment
-    shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
+    struct timespec start, stop;
+    double accum;
 
-    //Create system clock in shared memory
-    clock_gettime(CLOCK_REALTIME, &start);	/* mark start time */
-	sleep(5);	/* do stuff */
-	clock_gettime(CLOCK_REALTIME, &end);	/* mark the end time */
-    
-    second = (end.sec - start.sec) + (end.nano - start.nano);
-    nanosecond = BILLION * (end.sec - start.sec) + end.nano - start.nano;
-	
-    printf("elapsed time = %llu nanoseconds\n", (long long unsigned int) nanosecond);
-    printf("elapsed time = %llu seconds\n", (int) second);
-    
+    if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
+      perror( "clock gettime" );
+      return EXIT_FAILURE;
+    }
+
+    sleep(5);
+
+    if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
+      perror( "clock gettime" );
+      return EXIT_FAILURE;
+    }
+
+    accum = ( stop.tv_sec - start.tv_sec ) + (double)( stop.tv_nsec - start.tv_nsec )/ (double)BILLION;
+    printf( "Time in seconds: %lf\n", accum );
+    printf( "Time in nanoseconds: %lf\n", accum );
+
+
+
     int i; 
     for(i = 0; i < 5; i++){
         *shm_ptr = 10 + i;
