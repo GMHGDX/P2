@@ -129,7 +129,7 @@ int main(int argc, char *argv[]){
     if (childpid == 0){ //child code
         //convert iter into a string in order to use it in the exec function
         char sh_key_string[50];
-        snprintf(sh_key_string, sizeof(sh_key), "%i", sh_key);
+        snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
 
         //exec function to send children to worker
         char *args[] = {"worker", sh_key_string, NULL};
