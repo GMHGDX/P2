@@ -12,6 +12,8 @@
 #include <time.h> // to create system time
 #include <sys/shm.h> //Shared memory
 
+#include <cstdint>
+
 #define BILLION 1000000000L
 
 //#include <sys/wait.h>
