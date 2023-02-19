@@ -10,7 +10,7 @@
 #include <unistd.h> //for pid_t and exec
 #include <sys/types.h>
 #include <time.h> // to create random time
-//#include <sys/shm.h> //Shared memory
+#include <sys/shm.h> //Shared memory
 
 //#include <sys/wait.h>
 
@@ -22,15 +22,12 @@ int startNano; // time when it was forked
 };
 struct PCB processTable[20];
 
+//Create random second and nanosecond from user input
 int randomNumberGenerator(int limit)
 {
-    // int i;
     int sec;
-    // int nanosec;
+
     sec = (rand() % (limit)) + 1;
-    // printf("This is your random number: %d \n\n", sec);
-    // nanosec = ((rand() % (nanolimit)) + 1);
-    // printf("This is your random nano second: %d \n", nanosec);
 
     return sec;
 }
@@ -84,10 +81,55 @@ int main(int argc, char *argv[]){
 
     //Create random second and nanosecond from user input
     srand(time(0));
-    int sec = randomNumberGenerator(timelimit);
-    printf("This is your random number: %d \n\n", sec);
-    int nanosec = randomNumberGenerator(nanolimit);
-    printf("This is your nanosec: %d \n\n", nanosec);
+
+    int seconds = randomNumberGenerator(timelimit);
+    printf("This is your random number: %d \n\n", seconds);
+    int nanoseconds = randomNumberGenerator(nanolimit);
+    printf("This is your nanosec: %d \n\n", nanoseconds);
+/////////////////////////////////////////////////////////
+    //Create shared memory
+    //my key and random number
+    const int sh_key = 3147550;
+
+    //shared memory id associated with our key 
+    // shmget()
+
+    //ask for certain byes, and permissions
+    //ipc_creat = create it anew (in a positive way)
+    //666 = user/group/other has read & write permissions
+    int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
+    if(shm_id <= 0) {
+        fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
+        exit(1);
+    }
+
+    //attatch memory we allocated to our process and point pointer to it
+    int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
+    if (shm_ptr <= 0) {
+        fprintf(stderr,"Shared memory attach failed\n");
+        exit(1);
+    }
+    int i; 
+    int counter = 0;
+    for(i = 0; i < 5; i++){
+        *shm_ptr = 10 + i;
+        printf("Parent: Written Val.: %d\n", *shm_ptr);
+    }
+
+    shmdt( shm_ptr ); // Detach from the shared memory segment
+    shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
+///////////////////////////////////////////////////////////
+
+//Loop to check for terminated children
+// while (stillChildrenToLaunch) {
+//     incrementClock();
+//     Every half a second, output the process table to the screen
+//     checkIfChildHasTerminated();
+//     if (childHasTerminated, along the lines of this code -> int pid = waitpid(-1, &status, WNOHANG)) {
+//         updatePCBOfTerminatedChild;
+//         possiblyLaunchNewChild(obeying process limits)
+//     }
+// }
 
 return 0;
 }
