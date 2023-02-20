@@ -144,7 +144,7 @@ int main(int argc, char *argv[]){
     printf( "Time in nanoseconds: %lf\n", nanosecond );
     printf( "This is the added time: %lf\n", extraStuff );
 
-    printf("SysClockS: %d SysClockNano: %lf", second, extraStuff);
+    printf("SysClockS: %lf SysClockNano: %lf", second, extraStuff);
 
 
     int i; 
