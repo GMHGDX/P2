@@ -149,7 +149,7 @@ int main(int argc, char *argv[]){
     writeToMem.sec = sec;
     writeToMem.nano = nano;
 
-    printf("memSec: %lf memNano: %lf \n", writeToMem.se, writeToMem.nano);
+    printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
 
 
 
