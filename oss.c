@@ -26,6 +26,12 @@ int startNano; // time when it was forked
 };
 struct PCB processTable[20];
 
+
+struct SecStruct{
+    double sec;
+    double nano;
+};
+
 //Create random second and nanosecond from user input
 int randomNumberGenerator(int limit)
 {
@@ -104,7 +110,8 @@ int main(int argc, char *argv[]){
     //Create shared memory
     const int sh_key = 3147550;
 
-    int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
+    //int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
+    int shm_id = shmget(sh_key, sizeof(SecStruct), IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
@@ -141,44 +148,48 @@ int main(int argc, char *argv[]){
     double together = sec + nano/(double)BILLION;
     printf("Together (in seconds): %lf \n", together);
 
-    struct SecStruct{
-        double sec;
-        double nano;
-    };
+
     struct SecStruct writeToMem;
     writeToMem.sec = sec;
     writeToMem.nano = nano;
 
     printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    *shm_ptr = writeToMem;
+
+    writeToMem.sec = (double)55;
+    writeToMem.nano = (double)6669;
+    printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    writeToMem = *shm_ptr;
+
+    printf("Read from memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
 
 
 
+    // int i; 
+    // for(i = 0; i < 5; i++){
+    //     *shm_ptr = 10 + i;
+    //     printf("Parent: Written Val.: %d\n", *shm_ptr);
+    // }
 
-    int i; 
-    for(i = 0; i < 5; i++){
-        *shm_ptr = 10 + i;
-        printf("Parent: Written Val.: %d\n", *shm_ptr);
-    }
 
-
-    //fork child processes
-    childpid = fork();
-    if (childpid == -1) {
-        perror("Failed to fork");
-        return 1;
-    }
+    // //fork child processes
+    // childpid = fork();
+    // if (childpid == -1) {
+    //     perror("Failed to fork");
+    //     return 1;
+    // }
     
-    //send shared memory key to use in worker
-    if (childpid == 0){ 
-        char sh_key_string[50];
-        snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
+    // //send shared memory key to use in worker
+    // if (childpid == 0){ 
+    //     char sh_key_string[50];
+    //     snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
 
-        //exec function to send children to worker
-        char *args[] = {"worker", sh_key_string, NULL};
-        execvp("./worker", args);
-        return 1;
-        printf("Brydens a nice person");
-    }
+    //     //exec function to send children to worker
+    //     char *args[] = {"worker", sh_key_string, NULL};
+    //     execvp("./worker", args);
+    //     return 1;
+    //     printf("Brydens a nice person");
+    // }
 
     int stat;
     wait(&stat);    //Wait for child process to finish before deleting the memory
