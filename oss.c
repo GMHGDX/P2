@@ -144,7 +144,7 @@ int main(int argc, char *argv[]){
     struct SecStruct{
         double sec;
         double nano;
-    }
+    };
     struct SecStruct writeToMem;
     writeToMem.sec = sec;
     writeToMem.nano = nano;
