@@ -121,6 +121,7 @@ int main(int argc, char *argv[]){
     double second;
     double nanosecond;
     double sectonano;
+    double extraStuff;
 
     if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
       perror( "clock gettime" );
@@ -138,9 +139,10 @@ int main(int argc, char *argv[]){
     sectonano = ((double)second * (double)BILLION) * 1000;
     printf("This is the sec to nano: %lf\n", sectonano);
     printf( "Time in seconds: %lf\n", second );
-    nanosecond =(double)BILLION * (stop.tv_sec - start.tv_sec) +  (double)( stop.tv_nsec - start.tv_nsec) ;
+    nanosecond =(double)BILLION * (stop.tv_sec - start.tv_sec)  ;
+    extraStuff = (double)( stop.tv_nsec - start.tv_nsec);
     printf( "Time in nanoseconds: %lf\n", nanosecond );
-
+    printf( "This is the added time: %lf\n", extraStuff );
 
 
     int i; 
