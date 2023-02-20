@@ -118,36 +118,39 @@ int main(int argc, char *argv[]){
     }
 
     struct timespec start, stop;
-    double second;
-    double nanosecond;
-    double sectonano;
-    double extraStuff;
+    double sec;
+    double nano;
 
     if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
 
-    sleep(5);
+    sleep(2);
 
     if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
 
-    second = ( stop.tv_sec - start.tv_sec );
-    sectonano = ((double)second * (double)BILLION) * 1000;
-    printf("This is the sec to nano: %lf\n", sectonano);
-    printf( "Time in seconds: %lf\n", second );
-    nanosecond =(double)BILLION * (stop.tv_sec - start.tv_sec)  ;
-    extraStuff = (double)( stop.tv_nsec - start.tv_nsec);
-    printf( "Time in nanoseconds: %lf\n", nanosecond );
-    printf( "This is the added time: %lf\n", extraStuff );
+    sec = ( stop.tv_sec - start.tv_sec );
+    nano = (double)( stop.tv_nsec - start.tv_nsec);
 
-    printf("SysClockS: %lf SysClockNano: %lf \n", second, extraStuff);
+    printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
-    double together = second + extraStuff/(double)BILLION;
+    double together = sec + nano/(double)BILLION;
     printf("Together (in seconds): %lf \n", together);
+
+    struct SecStruct{
+        double sec;
+        double nano;
+    }
+    struct SecStruct writeToMem;
+    writeToMem.sec = sec;
+    writeToMem.nano = nano;
+
+    printf("memSec: %lf memNano: %lf \n", writeToMem.se, writeToMem.nano);
+
 
 
 
