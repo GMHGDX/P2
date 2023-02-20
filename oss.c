@@ -133,7 +133,7 @@ int main(int argc, char *argv[]){
       return EXIT_FAILURE;
     }
 
-    second = ( stop.tv_sec - start.tv_sec ) 
+    second = ( stop.tv_sec - start.tv_sec );
     printf( "Time in seconds: %lf\n", second );
     nanosecond = ( stop.tv_sec - start.tv_sec ) + (double)( stop.tv_nsec - start.tv_nsec )/ (double)BILLION;
     printf( "Time in nanoseconds: %lf\n", nanosecond );
