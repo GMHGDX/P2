@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/shm.h> //Shared memory
+#include <oss.h>
 
 int main(int argc, char *argv[]){
     printf("hello there from worker \n");

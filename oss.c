@@ -12,7 +12,7 @@
 #include <time.h> // to create system time
 #include <sys/shm.h> //Shared memory
 
-#include <stdint.h> 
+//#include <stdint.h> 
 
 #define BILLION 1000000000L
 
@@ -21,16 +21,10 @@
 struct PCB {
 int occupied; // either true or false
 pid_t pid; // process id of this child
-int startSeconds; // time when it was forked
-int startNano; // time when it was forked
+int sec; // time when it was forked
+int nano; // time when it was forked
 };
 struct PCB processTable[20];
-
-
-struct SecStruct{
-    double sec;
-    double nano;
-};
 
 //Create random second and nanosecond from user input
 int randomNumberGenerator(int limit)
@@ -110,7 +104,7 @@ int main(int argc, char *argv[]){
     //Create shared memory
     const int sh_key = 3147550;
     //int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
-    int shm_id = shmget(sh_key, sizeof(struct SecStruct), IPC_CREAT | 0666);
+    int shm_id = shmget(sh_key, sizeof(struct PCB), IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
@@ -118,7 +112,7 @@ int main(int argc, char *argv[]){
 
     //attatch memory we allocated to our process and point pointer to it
     //int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
-    struct SecStruct *shm_ptr = (struct SecStruct*) (shmat(shm_id, 0, 0));
+    struct PCB *shm_ptr = (struct PCB*) (shmat(shm_id, 0, 0));
     if (shm_ptr <= 0) {
         fprintf(stderr,"Shared memory attach failed\n");
         exit(1);
@@ -149,47 +143,37 @@ int main(int argc, char *argv[]){
     printf("Together (in seconds): %lf \n", together);
 
 
-    struct SecStruct writeToMem;
+    struct PCB writeToMem;
     writeToMem.sec = sec;
     writeToMem.nano = nano;
 
-    printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    //printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     *shm_ptr = writeToMem;
 
-    writeToMem.sec = (double)55;
-    writeToMem.nano = (double)6669;
-    printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    // writeToMem.sec = (double)55;
+    // writeToMem.nano = (double)6669;
+    // printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     writeToMem = *shm_ptr;
 
-    printf("Read from memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
 
-
-
-    // int i; 
-    // for(i = 0; i < 5; i++){
-    //     *shm_ptr = 10 + i;
-    //     printf("Parent: Written Val.: %d\n", *shm_ptr);
-    // }
-
-
-    // //fork child processes
-    // childpid = fork();
-    // if (childpid == -1) {
-    //     perror("Failed to fork");
-    //     return 1;
-    // }
+    //fork child processes
+    childpid = fork();
+    if (childpid == -1) {
+        perror("Failed to fork");
+        return 1;
+    }
     
-    // //send shared memory key to use in worker
-    // if (childpid == 0){ 
-    //     char sh_key_string[50];
-    //     snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
+    //send shared memory key to use in worker
+    if (childpid == 0){ 
+        char sh_key_string[50];
+        snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
 
-    //     //exec function to send children to worker
-    //     char *args[] = {"worker", sh_key_string, NULL};
-    //     execvp("./worker", args);
-    //     return 1;
-    //     printf("Brydens a nice person");
-    // }
+        //exec function to send children to worker
+        char *args[] = {"worker", sh_key_string, NULL};
+        execvp("./worker", args);
+        return 1;
+    }
 
     int stat;
     wait(&stat);    //Wait for child process to finish before deleting the memory
