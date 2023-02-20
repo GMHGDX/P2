@@ -14,7 +14,7 @@
 
 #include <stdint.h> 
 
-#define BILLION 1000000L
+#define BILLION 1000000000L
 
 //#include <sys/wait.h>
 
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]){
     printf("SysClockS: %lf SysClockNano: %lf \n", second, extraStuff);
 
     double together = second + extraStuff/(double)BILLION;
-    printf("Together : %lf \n", together);
+    printf("Together (in seconds): %lf \n", together);
 
 
 
