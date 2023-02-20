@@ -118,7 +118,8 @@ int main(int argc, char *argv[]){
     }
 
     struct timespec start, stop;
-    double accum;
+    double second;
+    double nanosecond;
 
     if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
       perror( "clock gettime" );
@@ -132,9 +133,10 @@ int main(int argc, char *argv[]){
       return EXIT_FAILURE;
     }
 
-    accum = ( stop.tv_sec - start.tv_sec ) + (double)( stop.tv_nsec - start.tv_nsec )/ (double)BILLION;
-    printf( "Time in seconds: %lf\n", accum );
-    printf( "Time in nanoseconds: %lf\n", accum );
+    second = ( stop.tv_sec - start.tv_sec ) 
+    printf( "Time in seconds: %lf\n", second );
+    nanosecond = ( stop.tv_sec - start.tv_sec ) + (double)( stop.tv_nsec - start.tv_nsec )/ (double)BILLION;
+    printf( "Time in nanoseconds: %lf\n", nanosecond );
 
 
 
