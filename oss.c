@@ -146,8 +146,8 @@ int main(int argc, char *argv[]){
 
     printf("SysClockS: %lf SysClockNano: %lf \n", second, extraStuff);
 
-    double together = second*(double)BILLION + extraStuff;
-    printf("Together : %lf", together);
+    double together = second + extraStuff/(double)BILLION;
+    printf("Together : %lf \n", together);
 
 
 
