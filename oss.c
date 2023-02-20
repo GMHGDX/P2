@@ -101,6 +101,8 @@ int main(int argc, char *argv[]){
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
     }
+    printf("Parent got sh_key: %i",shm_id)
+    printf("Parewn has id %i", shm_id);
 
     //attatch memory we allocated to our process and point pointer to it
     //int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
@@ -139,12 +141,12 @@ int main(int argc, char *argv[]){
     writeToMem.sec = sec;
     writeToMem.nano = nano;
 
-    //printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     *shm_ptr = writeToMem;
 
-    // writeToMem.sec = (double)55;
-    // writeToMem.nano = (double)6669;
-    // printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    writeToMem.sec = (double)55;
+    writeToMem.nano = (double)6669;
+    printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     writeToMem = *shm_ptr;
 
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
@@ -170,6 +172,8 @@ int main(int argc, char *argv[]){
     int stat;
     wait(&stat);    //Wait for child process to finish before deleting the memory
 
+
+    printf("deleting memory");
     shmdt( shm_ptr ); // Detach from the shared memory segment
     shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
 
