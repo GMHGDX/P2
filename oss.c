@@ -138,7 +138,7 @@ int main(int argc, char *argv[]){
     sectonano = ((double)second * (double)BILLION) * 1000;
     printf("This is the sec to nano: %lf\n", sectonano);
     printf( "Time in seconds: %lf\n", second );
-    nanosecond = (double)( stop.tv_nsec - start.tv_nsec) * (double)BILLION;
+    nanosecond =(double)BILLION * (stop.tv_sec - start.tv_sec) +  (double)( stop.tv_nsec - start.tv_nsec) ;
     printf( "Time in nanoseconds: %lf\n", nanosecond );
 
 
