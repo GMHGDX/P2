@@ -136,6 +136,7 @@ int main(int argc, char *argv[]){
 
     second = ( stop.tv_sec - start.tv_sec );
     sectonano = (double)second * (double)BILLION;
+    printf("This is the sec to nano: %lf\n", sectonano)
     printf( "Time in seconds: %lf\n", second );
     nanosecond = ((double)( stop.tv_nsec - start.tv_nsec) / (double)BILLION) - sectonano;
     printf( "Time in nanoseconds: %lf\n", nanosecond );
