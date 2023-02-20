@@ -15,14 +15,14 @@ int main(int argc, char *argv[]){
     }
 
     //attatch memory we allocated to our process and point pointer to it
-    struct PCB *shm_ptr = (int*) (shmat(shm_id, 0, 0));
+    struct PCB *shm_ptr = (struct PCB*) (shmat(shm_id, 0, 0));
     if (shm_ptr <= 0) {
         fprintf(stderr,"Child Shared memory attach failed\n");
         exit(1);
     }
     struct PCB readFromMem;
     readFromMem = *shm_ptr;
-    
+
     printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
 
     return 0;
