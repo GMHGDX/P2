@@ -14,7 +14,7 @@
 
 #include <stdint.h> 
 
-#define BILLION 1000000000L
+#define MILLION 1000000L
 
 //#include <sys/wait.h>
 
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]){
 
     second = ( stop.tv_sec - start.tv_sec );
     printf( "Time in seconds: %lf\n", second );
-    nanosecond = (double)( stop.tv_nsec - start.tv_nsec ) * (double)BILLION;
+    nanosecond = (double)( stop.tv_nsec - start.tv_nsec ) * (double)MILLION;
     printf( "Time in nanoseconds: %lf\n", nanosecond );
 
 
