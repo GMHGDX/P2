@@ -14,7 +14,7 @@
 
 #include <stdint.h> 
 
-#define MILLION 1000000L
+#define BILLION 1000000L
 
 //#include <sys/wait.h>
 
@@ -120,6 +120,7 @@ int main(int argc, char *argv[]){
     struct timespec start, stop;
     double second;
     double nanosecond;
+    double sectonano;
 
     if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
       perror( "clock gettime" );
@@ -134,8 +135,9 @@ int main(int argc, char *argv[]){
     }
 
     second = ( stop.tv_sec - start.tv_sec );
+    sectonano = second * BILLION;
     printf( "Time in seconds: %lf\n", second );
-    nanosecond = (double)( stop.tv_nsec - start.tv_nsec ) * (double)MILLION;
+    nanosecond = ((double)( stop.tv_nsec - start.tv_nsec ) - sectonano) / (double)BILLION;
     printf( "Time in nanoseconds: %lf3333\n", nanosecond );
 
 
