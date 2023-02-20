@@ -11,20 +11,12 @@
 #include <sys/types.h>
 #include <time.h> // to create system time
 #include <sys/shm.h> //Shared memory
-
+#include "oss.h"
 //#include <stdint.h> 
 
 #define BILLION 1000000000L
 
 //#include <sys/wait.h>
-
-struct PCB {
-int occupied; // either true or false
-pid_t pid; // process id of this child
-int sec; // time when it was forked
-int nano; // time when it was forked
-};
-struct PCB processTable[20];
 
 //Create random second and nanosecond from user input
 int randomNumberGenerator(int limit)
