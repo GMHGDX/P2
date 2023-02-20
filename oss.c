@@ -101,7 +101,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
     }
-    printf("Parent got sh_key: %i",shm_id)
+    printf("Parent got sh_key: %i",shm_id);
     printf("Parewn has id %i", shm_id);
 
     //attatch memory we allocated to our process and point pointer to it
