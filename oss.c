@@ -109,16 +109,16 @@ int main(int argc, char *argv[]){
 /////////////////////////////////////////////////////////
     //Create shared memory
     const int sh_key = 3147550;
-
     //int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
-    int shm_id = shmget(sh_key, sizeof(SecStruct), IPC_CREAT | 0666);
+    int shm_id = shmget(sh_key, sizeof(struct SecStruct), IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
     }
 
     //attatch memory we allocated to our process and point pointer to it
-    int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
+    //int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
+    struct SecStruct *shm_ptr = (struct SecStruct*) (shmat(shm_id, 0, 0));
     if (shm_ptr <= 0) {
         fprintf(stderr,"Shared memory attach failed\n");
         exit(1);
