@@ -144,9 +144,9 @@ int main(int argc, char *argv[]){
     printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     *shm_ptr = writeToMem;
 
-    writeToMem.sec = (double)55;
-    writeToMem.nano = (double)6669;
-    printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    // writeToMem.sec = (double)55;
+    // writeToMem.nano = (double)6669;
+    // printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     writeToMem = *shm_ptr;
 
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
