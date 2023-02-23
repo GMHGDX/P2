@@ -5,7 +5,7 @@
 int main(int argc, char *argv[]){
     printf("hello there from worker \n");
     int sh_key = atoi(argv[1]);
-    printf("Child got sh_key: %i", sh_key);
+    printf("Child got sh_key: %i\n", sh_key);
 
 
     int shm_id = shmget(sh_key, sizeof(struct PCB), 0666);

@@ -96,13 +96,13 @@ int main(int argc, char *argv[]){
     //Create shared memory
     const int sh_key = 3147550;
     //int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
-    int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
+    int shm_id = shmget(sh_key, sizeof(struct PCB), IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
     }
     printf("Parent got sh_key: %i\n",sh_key);
-    printf("Parewn has id %i\n", shm_id);
+    printf("Parent has id %i\n", shm_id);
 
     //attatch memory we allocated to our process and point pointer to it
     //int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
