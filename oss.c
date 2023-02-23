@@ -13,13 +13,9 @@
 #include <sys/shm.h> //Shared memory
 #include "oss.h"
 
-//#include <stdint.h> 
-
 #define BILLION 1000000000L
 
-//#include <sys/wait.h>
-
-//Create random second and nanosecond from user input
+//Create random second and nanosecond in bound of user input
 int randomNumberGenerator(int limit)
 {
     int sec;
@@ -32,16 +28,21 @@ int randomNumberGenerator(int limit)
 int main(int argc, char *argv[]){
 	//number of total children to launch (n)
 	int proc = 1;
+
 	//how many children run at the same time (s)
 	int simul = 1;
+
 	//bound of time that a child process will be launched for (t)
 	int timelimit= 2;
     int nanolimit = 32000;
 
-    //My cock 
-    // struct PCB start, end;
-    // uint64_t nanosecond;
-    // time_t second;
+    //variables for our system clock
+    struct timespec start, stop;
+    double sec;
+    double nano;
+
+    //for wait call
+    int stat;
 
     //child process ID
     pid_t childpid;
@@ -92,38 +93,33 @@ int main(int argc, char *argv[]){
     int nanoseconds = randomNumberGenerator(nanolimit);
     printf("This is your nanosec: %d \n\n", nanoseconds);
 
-
-/////////////////////////////////////////////////////////
-    //Create shared memory
+    //Create shared memory, key
     const int sh_key = 3147550;
-    //int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
+
     int shm_id = shmget(sh_key, sizeof(struct PCB), IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
     }
+
     printf("Parent got sh_key: %i\n",sh_key);
     printf("Parent has id %i\n", shm_id);
 
     //attatch memory we allocated to our process and point pointer to it
-    //int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
     struct PCB *shm_ptr = (struct PCB*) (shmat(shm_id, NULL, 0));
     if (shm_ptr <= 0) {
         fprintf(stderr,"Shared memory attach failed\n");
         exit(1);
     }
 
-    struct timespec start, stop;
-    double sec;
-    double nano;
-
+    //start the simulated system clock
     if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
 
-    sleep(2);
-
+    
+    //stop simulated system clock
     if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
       perror( "clock gettime" );
       return EXIT_FAILURE;
@@ -137,18 +133,25 @@ int main(int argc, char *argv[]){
     double together = sec + nano/(double)BILLION;
     printf("Together (in seconds): %lf \n", together);
 
-
+    //Write the seconds and nanoseconds to memory for children to read
     struct PCB writeToMem;
     writeToMem.sec = sec;
     writeToMem.nano = nano;
 
+    //Loop to check for terminated children
+// while (stillChildrenToLaunch) {
+//     incrementClock();
+//     Every half a second, output the process table to the screen
+//     checkIfChildHasTerminated();
+//     if (childHasTerminated, along the lines of this code -> int pid = waitpid(-1, &status, WNOHANG)) {
+//         updatePCBOfTerminatedChild;
+//         possiblyLaunchNewChild(obeying process limits)
+//     }
+// }
+
     printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     *shm_ptr = writeToMem;
     sleep(2);
-    
-    // writeToMem.sec = (double)0;
-    // writeToMem.nano = (double)0;
-    // printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
     writeToMem = *shm_ptr;
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
@@ -161,7 +164,7 @@ for (i = 1; i <= proc; i++){
         return 1;
     }
     
-    //send shared memory key to use in worker
+    //send shared memory key to worker for children to use
     if (childpid == 0){ 
         char sh_key_string[50];
         snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
@@ -189,16 +192,7 @@ for (i = 1; i <= proc; i++){
 
 ///////////////////////////////////////////////////////////
 
-//Loop to check for terminated children
-// while (stillChildrenToLaunch) {
-//     incrementClock();
-//     Every half a second, output the process table to the screen
-//     checkIfChildHasTerminated();
-//     if (childHasTerminated, along the lines of this code -> int pid = waitpid(-1, &status, WNOHANG)) {
-//         updatePCBOfTerminatedChild;
-//         possiblyLaunchNewChild(obeying process limits)
-//     }
-// }
+
 
 return 0;
 }
