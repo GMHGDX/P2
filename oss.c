@@ -13,8 +13,6 @@
 #include <sys/shm.h> //Shared memory
 #include "oss.h"
 
-table *timeTable;
-
 //#include <stdint.h> 
 
 #define BILLION 1000000000L
@@ -99,8 +97,7 @@ int main(int argc, char *argv[]){
     //Create shared memory
     const int sh_key = 3147550;
     //int shm_id = shmget(sh_key, sizeof(int)*10, IPC_CREAT | 0666);
-    // int shm_id = shmget(sh_key, sizeof(struct PCB), IPC_CREAT | 0666);
-    int shm_id = shmget(sh_key, N * sizeof(table), IPC_CREAT | 0666);
+    int shm_id = shmget(sh_key, sizeof(struct PCB), IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
@@ -110,9 +107,8 @@ int main(int argc, char *argv[]){
 
     //attatch memory we allocated to our process and point pointer to it
     //int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
-    //struct PCB *shm_ptr = (struct PCB*) (shmat(shm_id, 0, 0));
-    timeTable = (table *) (shmat(shm_id, NULL, 0));
-    if (timeTable <= 0) {
+    struct PCB *shm_ptr = (struct PCB*) (shmat(shm_id, 0, 0));
+    if (shm_ptr <= 0) {
         fprintf(stderr,"Shared memory attach failed\n");
         exit(1);
     }
