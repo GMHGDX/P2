@@ -155,7 +155,7 @@ int main(int argc, char *argv[]){
     
     writeToMem = *shm_ptr;
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
-
+int i = 0;
 for (i = 1; i <= proc; i++){
     //fork child processes
     childpid = fork();
