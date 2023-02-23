@@ -117,7 +117,7 @@ int main(int argc, char *argv[]){
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
-
+sleep(2);
     
     //stop simulated system clock
     if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
@@ -129,9 +129,6 @@ int main(int argc, char *argv[]){
     nano = (double)( stop.tv_nsec - start.tv_nsec);
 
     printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
-
-    double together = sec + nano/(double)BILLION;
-    printf("Together (in seconds): %lf \n", together);
 
     //Write the seconds and nanoseconds to memory for children to read
     struct PCB writeToMem;
