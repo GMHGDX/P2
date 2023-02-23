@@ -22,6 +22,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr,"Child Shared memory attach failed\n");
         exit(1);
     }
+    
     struct PCB readFromMem;
     readFromMem = *shm_ptr;
 

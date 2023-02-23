@@ -143,13 +143,13 @@ int main(int argc, char *argv[]){
 
     printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     *shm_ptr = writeToMem;
-
+    sleep(2);
     
     writeToMem.sec = (double)0;
     writeToMem.nano = (double)0;
     printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
-writeToMem = *shm_ptr;
+    writeToMem = *shm_ptr;
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
 
 
