@@ -153,7 +153,7 @@ int main(int argc, char *argv[]){
     writeToMem = *shm_ptr;
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
 
-
+for (i = 1; i <= proc; i++){
     //fork child processes
     childpid = fork();
     if (childpid == -1) {
@@ -171,6 +171,13 @@ int main(int argc, char *argv[]){
         execvp("./worker", args);
         return 1;
     }
+    else {
+        //wait for the process to finish after running the given simul int simultaneously before starting another process
+        if(i >= simul){
+            wait(&stat);
+        }
+    }
+}
 
     int stat;
     wait(&stat);    //Wait for child process to finish before deleting the memory
