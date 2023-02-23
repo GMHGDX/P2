@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
       return EXIT_FAILURE;
     }
 
-    sec = ( stop.tv_sec - start.tv_sec );
+    sec = (stop.tv_sec - start.tv_sec);
     nano = (double)( stop.tv_nsec - start.tv_nsec);
 
     printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
@@ -155,14 +155,15 @@ int main(int argc, char *argv[]){
     
     writeToMem = *shm_ptr;
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
-int i = 0;
-for (i = 1; i <= proc; i++){
-    //fork child processes
-    childpid = fork();
-    if (childpid == -1) {
-        perror("Failed to fork");
-        return 1;
-    }
+    
+    int i = 0;
+    for (i = 1; i <= proc; i++){
+        //fork child processes
+        childpid = fork();
+        if (childpid == -1) {
+            perror("Failed to fork");
+            return 1;
+        }
     
     //send shared memory key to worker for children to use
     if (childpid == 0){ 
