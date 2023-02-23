@@ -151,7 +151,6 @@ int main(int argc, char *argv[]){
 
     printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     *shm_ptr = writeToMem;
-    sleep(2);
     
     writeToMem = *shm_ptr;
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
