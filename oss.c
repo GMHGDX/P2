@@ -144,12 +144,13 @@ int main(int argc, char *argv[]){
     printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     *shm_ptr = writeToMem;
 
-    // writeToMem.sec = (double)55;
-    // writeToMem.nano = (double)6669;
-    // printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
-    writeToMem = *shm_ptr;
+    writeToMem.sec = (double)0;
+    writeToMem.nano = (double)0;
+    printf("I fucekd up the writertomem memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    
 
     printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+
 
     //fork child processes
     childpid = fork();
