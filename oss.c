@@ -107,7 +107,7 @@ int main(int argc, char *argv[]){
 
     //attatch memory we allocated to our process and point pointer to it
     //int *shm_ptr = (int*) (shmat(shm_id, 0, 0));
-    struct PCB *shm_ptr = (struct PCB*) (shmat(shm_id, 0, 0));
+    struct PCB *shm_ptr = (struct PCB*) (shmat(shm_id, NULL, 0));
     if (shm_ptr <= 0) {
         fprintf(stderr,"Shared memory attach failed\n");
         exit(1);
