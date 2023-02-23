@@ -181,11 +181,6 @@ for (i = 1; i <= proc; i++){
         }
     }
 }
-
-    int stat;
-    wait(&stat);    //Wait for child process to finish before deleting the memory
-
-
     printf("deleting memory");
     shmdt( shm_ptr ); // Detach from the shared memory segment
     shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
