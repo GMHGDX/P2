@@ -92,7 +92,7 @@ int main(int argc, char *argv[]){
     int seconds = randomNumberGenerator(timelimit);
     printf("This is your random number: %d \n\n", seconds);
 
-    int nanoseconds = randomNumberGenerator(nanolimit);
+    int nanoseconds = randomNumberGenerator(BILLION);
     printf("This is your nanosec: %d \n\n", nanoseconds);
 
     //Create shared memory, key
