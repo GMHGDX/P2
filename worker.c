@@ -25,7 +25,8 @@ int main(int argc, char *argv[]){
     
     // struct PCB readFromMem;
     // readFromMem = *shm_ptr;
-    processTable =  *shm_ptr;
+    struct PCB processTable[20];
+    *processTable =  *shm_ptr;
     printf("Child: Read Value -  memSec: %lf memNano: %lf \n", processTable[1].sec, processTable[1].nano);
 
     //printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);

@@ -39,7 +39,7 @@ int main(int argc, char *argv[]){
 
     //variables for our system clock
     struct timespec start, currentTime, lastOutput;
-    start = NULL;
+    //start = NULL;
     double sec;
     double nano;
 
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]){
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
-sleep(2);
+    sleep(2);
     
     //currentTime simulated system clock
     if( clock_gettime( CLOCK_REALTIME, &currentTime) == -1 ) {
@@ -207,6 +207,8 @@ sleep(2);
     // writeToMem = *shm_ptr;
     // printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
+    struct PCB processTable[20];
+
     int i;
     for (i = 1; i <= proc; i++){
         //fork child processes
@@ -219,11 +221,11 @@ sleep(2);
         processTable[i].nano = nano;
         processTable[i].sec = sec;
         processTable[i].pid = childpid;
-        processTable[i].occupied = true;
+        processTable[i].occupied = 1;
         printf("memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
-        *shm_ptr = processTable;
+        *shm_ptr = *processTable;
 
-        processTable = *shm_ptr;
+        *processTable = *shm_ptr;
         printf("Wrote to memory:: memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
         
         //send shared memory key to worker for children to use
