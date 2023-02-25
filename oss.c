@@ -26,6 +26,8 @@ int randomNumberGenerator(int limit)
 }
 
 int main(int argc, char *argv[]){
+    //hello??
+    
 	//number of total children to launch (n)
 	int proc = 1;
 
