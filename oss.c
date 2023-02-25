@@ -207,7 +207,7 @@ int main(int argc, char *argv[]){
     // writeToMem = *shm_ptr;
     // printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
-    struct PCB processTable[20];
+    struct PCB* processTable[20];
 
     int i;
     for (i = 1; i <= proc; i++){
