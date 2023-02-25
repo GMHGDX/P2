@@ -180,7 +180,7 @@ sleep(2);
 }
     printf("deleting memory");
     shmdt( shm_ptr ); // Detach from the shared memory segment
-    shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
+    shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id 
 
 ///////////////////////////////////////////////////////////
 
