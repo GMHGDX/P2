@@ -8,7 +8,7 @@ int main(int argc, char *argv[]){
     printf("Child got sh_key: %i\n", sh_key);
 
 
-    int shm_id = shmget(sh_key, sizeof(struct PCB), 0666);
+    int shm_id = shmget(sh_key, sizeof(struct PCB[20]), 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"CHILD ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
@@ -23,10 +23,12 @@ int main(int argc, char *argv[]){
         exit(1);
     }
     
-    struct PCB readFromMem;
-    readFromMem = *shm_ptr;
+    // struct PCB readFromMem;
+    // readFromMem = *shm_ptr;
+    processTable =  *shm_ptr;
+    printf("Child: Read Value -  memSec: %lf memNano: %lf \n", processTable[1].sec, processTable[1].nano);
 
-    printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
+    //printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
 
     return 0;
 //     WORKER PID:6577 PPID:6576 SysClockS: 5 SysclockNano: 1000 TermTimeS: 11 TermTimeNano: 500100

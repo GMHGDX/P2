@@ -28,6 +28,7 @@ int randomNumberGenerator(int limit)
 int main(int argc, char *argv[]){
 	//number of total children to launch (n)
 	int proc = 1;
+    int totalChildren = 0;
 
 	//how many children run at the same time (s)
 	int simul = 1;
@@ -37,7 +38,8 @@ int main(int argc, char *argv[]){
     int nanolimit = 32000;
 
     //variables for our system clock
-    struct timespec start, stop;
+    struct timespec start, currentTime, lastOutput;
+    start = NULL;
     double sec;
     double nano;
 
@@ -90,13 +92,13 @@ int main(int argc, char *argv[]){
     int seconds = randomNumberGenerator(timelimit);
     printf("This is your random number: %d \n\n", seconds);
 
-    int nanoseconds = randomNumberGenerator(nanolimit);
+    int nanoseconds = randomNumberGenerator(BILLION);
     printf("This is your nanosec: %d \n\n", nanoseconds);
 
     //Create shared memory, key
     const int sh_key = 3147550;
 
-    int shm_id = shmget(sh_key, sizeof(struct PCB), IPC_CREAT | 0666);
+    int shm_id = shmget(sh_key, sizeof(struct PCB[20]), IPC_CREAT | 0666);
     if(shm_id <= 0) {
         fprintf(stderr,"ERROR: Failed to get shared memory, shared memory id = %i\n", shm_id);
         exit(1);
@@ -112,28 +114,30 @@ int main(int argc, char *argv[]){
         exit(1);
     }
 
-    //start the simulated system clock
+     //start the simulated system clock
     if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
 sleep(2);
     
-    //stop simulated system clock
-    if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
+    //currentTime simulated system clock
+    if( clock_gettime( CLOCK_REALTIME, &currentTime) == -1 ) {
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
+    // lastOutput = currentTime;
 
-    sec = (stop.tv_sec - start.tv_sec);
-    nano = (double)( stop.tv_nsec - start.tv_nsec);
+    sec = (currentTime.tv_sec - start.tv_sec);
+    nano = (double)( currentTime.tv_nsec - start.tv_nsec);
 
     printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
     //Write the seconds and nanoseconds to memory for children to read
-    struct PCB writeToMem;
-    writeToMem.sec = sec;
-    writeToMem.nano = nano;
+    //struct PCB writeToMem;
+   //writeToMem.sec = sec;
+    //writeToMem.nano = nano;
+
 
     //Loop to check for terminated children
 // while (stillChildrenToLaunch) {
@@ -146,13 +150,64 @@ sleep(2);
 //     }
 // }
 
-    printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
-    *shm_ptr = writeToMem;
+// while (totalChildren < proc){
+//     if(start == NULL){
+//         if( clock_gettime( CLOCK_REALTIME, &start) == -1 ) {
+//             perror( "clock gettime" );
+//             return EXIT_FAILURE;
+//         }
+//         lastOutput = start;
+//     }else{
+//         if( clock_gettime( CLOCK_REALTIME, &currentTime) == -1 ) {
+//             perror( "clock gettime" );
+//             return EXIT_FAILURE;
+//         }
+//         sec = (currentTime.tv_sec - start.tv_sec);
+//         nano = (double)( currentTime.tv_nsec - start.tv_nsec);
+//         //printf("It has been %lf secs  %lf nanopseonds \n", sec, nano);
+        
+    //     double lastOutputTotal = lastOutput.tv_sec + lastOutput.tv_nsec/(BILLION);      // 5 + 6234234 = 5.623234
+    //     double currentTimeTotal = currentTime.tv_sec + currentTime.tv_nsec/(BILLION);                        // 5 + 7234234 = 5.723234
+    //     if((currentTimeTotal - lastOutputTotal) > 0.5){
+    //         ouytputprocesstable();
+    //         lastOutput = currentTime;
+    //     }
+    // }
+
+//     //fork child processes
+//     childpid = fork();
+//     if (childpid == -1) {
+//         perror("Failed to fork");
+//         return 1;
+//     }
+//     totalChildren++;
     
-    writeToMem = *shm_ptr;
-    printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+//     //send shared memory key to worker for children to use
+//     if (childpid == 0){ 
+//         char sh_key_string[50];
+//         snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
+
+//         //exec function to send children to worker
+//         char *args[] = {"worker", sh_key_string, NULL};
+//         execvp("./worker", args);
+//         return 1;
+//     }
+//     else {
+//         processTable[totalChildren].nano = currentTime.tv_nsec;
+//         processTable[totalChildren].sec = currentTime.tv_sec;
+//         processTable[totalChildren].pid = childpid;
+//         processTable[totalChildren].occupied = true;
+//         *shm_ptr = processTable;
+//     }
+// }
+
+    // printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    // *shm_ptr = writeToMem;
     
-    int i = 0;
+    // writeToMem = *shm_ptr;
+    // printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    
+    int i;
     for (i = 1; i <= proc; i++){
         //fork child processes
         childpid = fork();
@@ -160,24 +215,34 @@ sleep(2);
             perror("Failed to fork");
             return 1;
         }
-    
-    //send shared memory key to worker for children to use
-    if (childpid == 0){ 
-        char sh_key_string[50];
-        snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
 
-        //exec function to send children to worker
-        char *args[] = {"worker", sh_key_string, NULL};
-        execvp("./worker", args);
-        return 1;
-    }
-    else {
-        //wait for the process to finish after running the given simul int simultaneously before starting another process
-        if(i >= simul){
-            wait(&stat);
+        processTable[i].nano = nano;
+        processTable[i].sec = sec;
+        processTable[i].pid = childpid;
+        processTable[i].occupied = true;
+        printf("memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
+        *shm_ptr = processTable;
+
+        processTable = *shm_ptr;
+        printf("Wrote to memory:: memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
+        
+        //send shared memory key to worker for children to use
+        if (childpid == 0){ 
+            char sh_key_string[50];
+            snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
+
+            //exec function to send children to worker
+            char *args[] = {"worker", sh_key_string, NULL};
+            execvp("./worker", args);
+            return 1;
+        }
+        else {
+            //wait for the process to finish after running the given simul int simultaneously before starting another process
+            if(i >= simul){
+                wait(&stat);
+            }
         }
     }
-}
     printf("deleting memory");
     shmdt( shm_ptr ); // Detach from the shared memory segment
     shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id
