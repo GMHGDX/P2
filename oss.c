@@ -218,6 +218,7 @@ int main(int argc, char *argv[]){
             return 1;
         }
 
+        printf("i is %i", i);
         processTable[i].nano = nano;
         processTable[i].sec = sec;
         processTable[i].pid = childpid;
