@@ -119,7 +119,7 @@ int main(int argc, char *argv[]){
       perror( "clock gettime" );
       return EXIT_FAILURE;
     }
-sleep(2);
+    sleep(2);
     
     // //stop simulated system clock
     // if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
@@ -138,6 +138,7 @@ sleep(2);
     writeToMem.nano = nano;
 
     int childrenToLaunch;
+    int i = 0;
     //Loop to check for terminated children
     while (childrenToLaunch < proc) {
         //stop simulated system clock
@@ -191,6 +192,7 @@ sleep(2);
             }
         }
         childrenToLaunch++;
+        i++;
     }   
     //     Every half a second, output the process table to the screen
     //     checkIfChildHasTerminated();
@@ -198,7 +200,7 @@ sleep(2);
     //         updatePCBOfTerminatedChild;
     //         possiblyLaunchNewChild(obeying process limits)
     //     }
-    }
+    //}
 
     // printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     // *shm_ptr = writeToMem;
@@ -230,7 +232,7 @@ sleep(2);
     //         wait(&stat);
     //     }
     // }
-}
+//}
     printf("deleting memory");
     shmdt( shm_ptr ); // Detach from the shared memory segment
     shmctl( shm_id, IPC_RMID, NULL ); // Free shared memory segment shm_id 
