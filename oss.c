@@ -218,14 +218,14 @@ int main(int argc, char *argv[]){
         //processTable[i].pid = childpid;
         processTable[i]->occupied = 1;
         printf("memSec: %lf memNano: %lf \n", processTable[i]->sec, processTable[i]->nano);
-        *shm_ptr = processTable;
+        *shm_ptr = &processTable;
 
         processTable[i]->nano = 5;
         processTable[i]->sec = 77;
 
         printf("Fucked up memory memSec: %lf memNano: %lf \n", processTable[i]->sec, processTable[i]->nano);
 
-        *processTable = *shm_ptr;
+        &processTable = *shm_ptr;
         printf("Wrote to memory:: memSec: %lf memNano: %lf \n", processTable[i]->sec, processTable[i]->nano);
 
 
