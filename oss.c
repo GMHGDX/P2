@@ -213,20 +213,20 @@ int main(int argc, char *argv[]){
     for (i = 1; i <= proc; i++){
 
         printf("i is %i", i);
-        processTable[i].nano = nano;
-        processTable[i].sec = sec;
+        processTable[i]->nano = nano;
+        processTable[i]->sec = sec;
         //processTable[i].pid = childpid;
-        processTable[i].occupied = 1;
-        printf("memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
+        processTable[i]->occupied = 1;
+        printf("memSec: %lf memNano: %lf \n", processTable[i]->sec, processTable[i]->nano);
         *shm_ptr = *processTable;
 
-        processTable[i].nano = 5;
-        processTable[i].sec = 77;
+        processTable[i]->nano = 5;
+        processTable[i]->sec = 77;
 
-        printf("Fucked up memory memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
+        printf("Fucked up memory memSec: %lf memNano: %lf \n", processTable[i]->sec, processTable[i]->nano);
 
         *processTable = *shm_ptr;
-        printf("Wrote to memory:: memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
+        printf("Wrote to memory:: memSec: %lf memNano: %lf \n", processTable[i]->sec, processTable[i]->nano);
 
 
         //fork child processes
