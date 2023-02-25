@@ -121,11 +121,11 @@ int main(int argc, char *argv[]){
     }
 sleep(2);
     
-    //stop simulated system clock
-    if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
-      perror( "clock gettime" );
-      return EXIT_FAILURE;
-    }
+    // //stop simulated system clock
+    // if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
+    //   perror( "clock gettime" );
+    //   return EXIT_FAILURE;
+    // }
 
     sec = (stop.tv_sec - start.tv_sec);
     nano = (double)( stop.tv_nsec - start.tv_nsec);
@@ -137,25 +137,31 @@ sleep(2);
     writeToMem.sec = sec;
     writeToMem.nano = nano;
 
+    int childrenToLaunch;
     //Loop to check for terminated children
-// while (stillChildrenToLaunch) {
-//     incrementClock();
-//     Every half a second, output the process table to the screen
-//     checkIfChildHasTerminated();
-//     if (childHasTerminated, along the lines of this code -> int pid = waitpid(-1, &status, WNOHANG)) {
-//         updatePCBOfTerminatedChild;
-//         possiblyLaunchNewChild(obeying process limits)
-//     }
-// }
+    while (childrenToLaunch < proc) {
+        //stop simulated system clock
+        if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
+            perror( "clock gettime" );
+            return EXIT_FAILURE;
+        }
+        sec = (stop.tv_sec - start.tv_sec);
+        nano = (double)( stop.tv_nsec - start.tv_nsec);
 
-    printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
-    *shm_ptr = writeToMem;
+        printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
+
+        //Write the seconds and nanoseconds to memory for children to read
+        struct PCB writeToMem;
+        writeToMem.sec = sec;
+        writeToMem.nano = nano;
+
+        printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+        *shm_ptr = writeToMem;
+        
+        writeToMem = *shm_ptr;
+        printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
-    writeToMem = *shm_ptr;
-    printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
-    
-    int i = 0;
-    for (i = 1; i <= proc; i++){
+        //////////////////////////////////////////////////////////////////
         //fork child processes
         childpid = fork();
         if (childpid == -1) {
@@ -163,22 +169,67 @@ sleep(2);
             return 1;
         }
     
-    //send shared memory key to worker for children to use
-    if (childpid == 0){ 
-        char sh_key_string[50];
-        snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
+        //send shared memory key to worker for children to use
+        if (childpid == 0){ 
+            char sh_key_string[50];
+            char termSec_string[50];
+            char termNano_string[50];
 
-        //exec function to send children to worker
-        char *args[] = {"worker", sh_key_string, NULL};
-        execvp("./worker", args);
-        return 1;
-    }
-    else {
-        //wait for the process to finish after running the given simul int simultaneously before starting another process
-        if(i >= simul){
-            wait(&stat);
+            snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
+            snprintf(termSec_string, sizeof(termSec_string), "%i", seconds);
+            snprintf(termNano_string, sizeof(termNano_string), "%i", nanoseconds);
+
+            //exec function to send children to worker
+            char *args[] = {"worker", sh_key_string, termSec_string, termNano_string, NULL};
+            execvp("./worker", args);
+            return 1;
         }
+        else {
+            //wait for the process to finish after running the given simul int simultaneously before starting another process
+            if(i >= simul){
+                wait(&stat);
+            }
+        }
+        childrenToLaunch++;
+    }   
+    //     Every half a second, output the process table to the screen
+    //     checkIfChildHasTerminated();
+    //     if (childHasTerminated, along the lines of this code -> int pid = waitpid(-1, &status, WNOHANG)) {
+    //         updatePCBOfTerminatedChild;
+    //         possiblyLaunchNewChild(obeying process limits)
+    //     }
     }
+
+    // printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    // *shm_ptr = writeToMem;
+    
+    // writeToMem = *shm_ptr;
+    // printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+    
+    
+    //     //fork child processes
+    //     childpid = fork();
+    //     if (childpid == -1) {
+    //         perror("Failed to fork");
+    //         return 1;
+    //     }
+    
+    // //send shared memory key to worker for children to use
+    // if (childpid == 0){ 
+    //     char sh_key_string[50];
+    //     snprintf(sh_key_string, sizeof(sh_key_string), "%i", sh_key);
+
+    //     //exec function to send children to worker
+    //     char *args[] = {"worker", sh_key_string, NULL};
+    //     execvp("./worker", args);
+    //     return 1;
+    // }
+    // else {
+    //     //wait for the process to finish after running the given simul int simultaneously before starting another process
+    //     if(i >= simul){
+    //         wait(&stat);
+    //     }
+    // }
 }
     printf("deleting memory");
     shmdt( shm_ptr ); // Detach from the shared memory segment

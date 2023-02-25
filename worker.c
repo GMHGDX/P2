@@ -5,8 +5,12 @@
 int main(int argc, char *argv[]){
     printf("hello there from worker \n");
     int sh_key = atoi(argv[1]);
-    printf("Child got sh_key: %i\n", sh_key);
+    int sec = atoi(argv[2]);
+    int nano = atoi(argv[3]);
 
+    printf("Child got sh_key: %i\n", sh_key);
+    printf("worker got random second: %i\n", sec);
+    printf("worker got random nanosecond: %i\n", nano);
 
     int shm_id = shmget(sh_key, sizeof(struct PCB), 0666);
     if(shm_id <= 0) {
