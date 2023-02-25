@@ -136,7 +136,7 @@ int main(int argc, char *argv[]){
     // writeToMem.sec = sec;
     // writeToMem.nano = nano;
 
-    int childrenToLaunch;
+    int childrenToLaunch = 0;
     int i = 0;
     //Loop to check for terminated children
     while (childrenToLaunch < proc) {
