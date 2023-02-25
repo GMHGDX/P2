@@ -126,15 +126,15 @@ int main(int argc, char *argv[]){
     //   return EXIT_FAILURE;
     // }
 
-    sec = (stop.tv_sec - start.tv_sec);
-    nano = (double)( stop.tv_nsec - start.tv_nsec);
+    // sec = (stop.tv_sec - start.tv_sec);
+    // nano = (double)( stop.tv_nsec - start.tv_nsec);
 
-    printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
+    // printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
-    //Write the seconds and nanoseconds to memory for children to read
-    struct PCB writeToMem;
-    writeToMem.sec = sec;
-    writeToMem.nano = nano;
+    // //Write the seconds and nanoseconds to memory for children to read
+    // struct PCB writeToMem;
+    // writeToMem.sec = sec;
+    // writeToMem.nano = nano;
 
     int childrenToLaunch;
     int i = 0;
