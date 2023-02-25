@@ -209,6 +209,17 @@ int main(int argc, char *argv[]){
     
     struct PCB processTable[20];
 
+    printf("i is %i", i);
+    processTable[i].nano = nano;
+    processTable[i].sec = sec;
+    //processTable[i].pid = childpid;
+    processTable[i].occupied = 1;
+    printf("memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
+    *shm_ptr = *processTable;
+
+    *processTable = *shm_ptr;
+    printf("Wrote to memory:: memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
+
     int i;
     for (i = 1; i <= proc; i++){
         //fork child processes
@@ -217,17 +228,6 @@ int main(int argc, char *argv[]){
             perror("Failed to fork");
             return 1;
         }
-
-        printf("i is %i", i);
-        processTable[i].nano = nano;
-        processTable[i].sec = sec;
-        processTable[i].pid = childpid;
-        processTable[i].occupied = 1;
-        printf("memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
-        *shm_ptr = *processTable;
-
-        *processTable = *shm_ptr;
-        printf("Wrote to memory:: memSec: %lf memNano: %lf \n", processTable[i].sec, processTable[i].nano);
         
         //send shared memory key to worker for children to use
         if (childpid == 0){ 
