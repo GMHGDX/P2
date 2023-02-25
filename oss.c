@@ -186,7 +186,7 @@ int main(int argc, char *argv[]){
         }
         else {
             //wait for the process to finish after running the given simul int simultaneously before starting another process
-            if(i = simul){
+            if(i <= simul){
                 wait(&stat);
             }
         }
