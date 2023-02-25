@@ -36,7 +36,6 @@ int main(int argc, char *argv[]){
 
 	//bound of time that a child process will be launched for (t)
 	int timelimit= 2;
-    int nanolimit = 32000;
 
     //variables for our system clock
     struct timespec start, stop;
