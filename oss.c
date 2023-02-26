@@ -168,12 +168,12 @@ int main(int argc, char *argv[]){
             }
         }
 
-        if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
-            printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
-            printf("Process Table:\n");
-            printTable();
-            break; //program can end, all child processes are done
-        }
+        // if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
+        //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
+        //     printf("Process Table:\n");
+        //     printTable();
+        //     break; //program can end, all child processes are done
+        // }
 
         //stop simulated system clock
         if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
@@ -187,6 +187,13 @@ int main(int argc, char *argv[]){
         if(start.tv_nsec > stop.tv_nsec){
             sec = (stop.tv_sec - start.tv_sec) - 1;
             nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(1)*BILLION);
+        }
+
+        if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
+            printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
+            printf("Process Table:\n");
+            printTable();
+            break; //program can end, all child processes are done
         }
 
         //printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
@@ -258,6 +265,6 @@ void printTable(){
     printf("Entry   Occupied    PID     StartS     StartN\n");
     int i;
     for(i=0;i<20;i++){
-        printf("%i\t\t %d\t\t\t%ld\t\t%i\t\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+        printf("%i\t %d\t\t%ld\t\t%i\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
     }
 }
