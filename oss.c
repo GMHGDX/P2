@@ -154,9 +154,10 @@ int main(int argc, char *argv[]){
         
         sec = (stop.tv_sec - start.tv_sec); 
         nano = (double)( stop.tv_nsec - start.tv_nsec);
-        
+
         if(start.tv_nsec > stop.tv_nsec){
-            nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(stop.tv_sec - start.tv_sec)*BILLION);
+            sec = (stop.tv_sec - start.tv_sec) - 1;
+            nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(1)*BILLION);
         }
 
         printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
