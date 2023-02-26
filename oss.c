@@ -180,7 +180,7 @@ int main(int argc, char *argv[]){
             snprintf(termNano_string, sizeof(termNano_string), "%i", nanoseconds);
 
             //exec function to send children to worker
-            char *args[] = {"worker", sh_key_string, termSec_string, termNano_string, numberOchildren_string NULL};
+            char *args[] = {"worker", sh_key_string, termSec_string, termNano_string, NULL};
             execvp("./worker", args);
             return 1;
         }
