@@ -9,6 +9,7 @@ int main(int argc, char *argv[]){
     int sysClockS;
     int sysClockNano;
     int secPassed;
+    int checkSec = 0;
 
     int sh_key = atoi(argv[1]);
     int sec = atoi(argv[2]);
@@ -62,7 +63,10 @@ int main(int argc, char *argv[]){
                 break;
             }
         }
-        printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
+        if(checkSec == secPassed){
+            printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
+            checkSec++;
+        }
     }
 
     printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --Terminating",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
