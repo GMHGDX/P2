@@ -47,18 +47,25 @@ int main(int argc, char *argv[]){
     printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
     printf("when it will terminate sec + memsec: %i", readFromMem.sec);
 
-    printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n--Just Starting",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
+    printf("sysClockS: %ld", sysClockS);
+    printf("sysClockNano: %ld", sysClockNano);
+    printf("termTimeS: %ld", termTimeS);
+    printf("termTimeNano: %ld", termTimeNano);
+    printf("secPassed: %ld", secPassed);
 
-    while(1){
-        if(termTimeS <= sysClockS){
-            if (termTimeNano <= sysClockNano){
-                break;
-            }
-        }
-        printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
-    }
 
-    printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --Terminating",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
+    //printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n--Just Starting",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
+
+    // while(1){
+    //     if(termTimeS <= sysClockS){
+    //         if (termTimeNano <= sysClockNano){
+    //             break;
+    //         }
+    //     }
+    //     printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
+    // }
+
+    //printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --Terminating",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
 
     return 0;
 }
