@@ -44,28 +44,28 @@ int main(int argc, char *argv[]){
 
     secPassed = sec - readFromMem.sec;
 
-    printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
-    printf("when it will terminate sec + memsec: %ld", readFromMem.sec);
+    // printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
+    // printf("when it will terminate sec + memsec: %ld", readFromMem.sec);
 
-    printf("\n\nsysClockS: %i\n", sysClockS);
-    printf("sysClockNano: %i\n", sysClockNano);
-    printf("termTimeS: %i\n", termTimeS);
-    printf("termTimeNano: %i\n", termTimeNano);
-    printf("secPassed: %i\n\n", secPassed);
+    // printf("\n\nsysClockS: %i\n", sysClockS);
+    // printf("sysClockNano: %i\n", sysClockNano);
+    // printf("termTimeS: %i\n", termTimeS);
+    // printf("termTimeNano: %i\n", termTimeNano);
+    // printf("secPassed: %i\n\n", secPassed);
 
 
-    //printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n--Just Starting",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
+    printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n--Just Starting",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
 
-    // while(1){
-    //     if(termTimeS <= sysClockS){
-    //         if (termTimeNano <= sysClockNano){
-    //             break;
-    //         }
-    //     }
-    //     printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
-    // }
+    while(1){
+        if(termTimeS <= sysClockS){
+            if (termTimeNano <= sysClockNano){
+                break;
+            }
+        }
+        printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
+    }
 
-    //printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --Terminating",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
+    printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --Terminating",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
 
     return 0;
 }
