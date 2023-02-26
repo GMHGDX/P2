@@ -55,10 +55,10 @@ int main(int argc, char *argv[]){
                 break;
             }
         }
-        printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed"(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
+        printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
     }
 
-    printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --Terminating"(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
+    printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --Terminating",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
 
     return 0;
 }
