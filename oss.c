@@ -131,7 +131,7 @@ int main(int argc, char *argv[]){
     while(1) {
         if (childpid != 0){
             //return_pid = waitpid(childpid, &status, WNOHANG); /* WNOHANG def'd in wait.h */
-            return_pid = wait(0, &status, WNOHANG);
+            return_pid = waitpid(0, &status, WNOHANG);
             if (return_pid == -1) {
                 perror("Failed to fork");
                 return 1;
