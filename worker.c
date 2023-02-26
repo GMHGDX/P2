@@ -47,11 +47,11 @@ int main(int argc, char *argv[]){
     printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
     printf("when it will terminate sec + memsec: %i", readFromMem.sec);
 
-    printf("\n\nsysClockS: %ld\n", sysClockS);
-    printf("sysClockNano: %ld\n", sysClockNano);
-    printf("termTimeS: %ld\n", termTimeS);
-    printf("termTimeNano: %ld\n", termTimeNano);
-    printf("secPassed: %ld\n\n", secPassed);
+    printf("\n\nsysClockS: %i\n", sysClockS);
+    printf("sysClockNano: %i\n", sysClockNano);
+    printf("termTimeS: %i\n", termTimeS);
+    printf("termTimeNano: %i\n", termTimeNano);
+    printf("secPassed: %i\n\n", secPassed);
 
 
     //printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n--Just Starting",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
