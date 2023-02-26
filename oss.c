@@ -137,6 +137,7 @@ int main(int argc, char *argv[]){
             } else if (return_pid == 0) {
                 //Child is still running, do nothing
             } else if (return_pid == childpid) {
+                printf("\nThe return PID: %ld\n", return_pid);
                 //Child(ren) have finished, start new chilren if needed, exit program if all chlriren have finished
                 allChildrenHaveFinished = true;
             }
@@ -182,6 +183,11 @@ int main(int argc, char *argv[]){
                 return 1;
             }
             allChildrenHaveFinished = false;
+            processTable[childrenToLaunch].nano = nano;
+            processTable[childrenToLaunch].occupied = 1;
+            processTable[childrenToLaunch].pid = childpid;
+            processTable[childrenToLaunch].sec = sec;
+
             childrenToLaunch++;
         }
     
