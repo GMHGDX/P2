@@ -43,8 +43,6 @@ int main(int argc, char *argv[]){
     sysClockS = readFromMem.sec;
     sysClockNano = readFromMem.nano;
 
-    secPassed = sec - readFromMem.sec;
-
     // printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
     // printf("when it will terminate sec + memsec: %ld", readFromMem.sec);
 
@@ -69,7 +67,7 @@ int main(int argc, char *argv[]){
             }
         }
         if(checkSec == secPassed){
-            printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, secPassed);
+            printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, checkSec);
             checkSec++;
         }
     }
