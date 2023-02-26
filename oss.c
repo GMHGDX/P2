@@ -169,8 +169,8 @@ int main(int argc, char *argv[]){
         }
 
         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
-            printf("OSS PID: %ld SysClockS: %i SysclockNano: %i", (long)getpid(), sec, nano);
-            printf("Process Table:");
+            printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
+            printf("Process Table:\n");
             printTable();
             break; //program can end, all child processes are done
         }
@@ -255,9 +255,9 @@ return 0;
 
 
 void printTable(){
-    printf("Entry   Occupied    PID     StartS     StartN");
+    printf("Entry   Occupied    PID     StartS     StartN\n");
     int i;
     for(i=0;i<20;i++){
-        printf("%i      %d          %ld     %i      %i", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+        printf("%i      %d          %ld     %i      %i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
     }
 }
