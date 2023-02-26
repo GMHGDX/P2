@@ -130,13 +130,14 @@ int main(int argc, char *argv[]){
     //Loop to check for terminated children
     while(1) {
         if (childpid != 0){
-            return_pid = waitpid(childpid, &status, WNOHANG); /* WNOHANG def'd in wait.h */
+            //return_pid = waitpid(childpid, &status, WNOHANG); /* WNOHANG def'd in wait.h */
+            return_pid = wait(0, &status, WNOHANG);
             if (return_pid == -1) {
                 perror("Failed to fork");
                 return 1;
             } else if (return_pid == 0) {
                 //Child is still running, do nothing
-            } else if (return_pid == childpid) {
+            } else if (return_pid >0 ) {
                 printf("\nThe return PID: %ld\n", return_pid);
                 //Child(ren) have finished, start new chilren if needed, exit program if all chlriren have finished
                 allChildrenHaveFinished = true;
