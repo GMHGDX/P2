@@ -17,6 +17,8 @@
 
 #define BILLION 1000000000L
 
+void printTable();
+
 //Create random second and nanosecond in bound of user input
 int randomNumberGenerator(int limit)
 {
@@ -145,7 +147,7 @@ int main(int argc, char *argv[]){
                 return 1;
             } else if (return_pid == 0) {
                 //Child is still running, do nothing
-            } else if (return_pid >0) {
+            } else if (return_pid > 0) {
                 printf("\nThe return PID: %ld\n", return_pid);
                 //Child(ren) have finished, start new chilren if needed, exit program if all chlriren have finished
                 for(i = 0; i < 20; i++){
@@ -167,6 +169,9 @@ int main(int argc, char *argv[]){
         }
 
         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
+            printf("OSS PID: %ld SysClockS: %i SysclockNano: %i", (long)getpid(), sec, nano);
+            printf("Process Table:");
+            printTable();
             break; //program can end, all child processes are done
         }
 
@@ -246,4 +251,13 @@ int main(int argc, char *argv[]){
 
 
 return 0;
+}
+
+
+void printTable(){
+    printf("Entry   Occupied    PID     StartS     StartN");
+    int i;
+    for(i=0;i<20;i++){
+        printf("%i      %d          %ld     %i      %i", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+    }
 }
