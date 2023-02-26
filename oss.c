@@ -258,6 +258,6 @@ void printTable(){
     printf("Entry   Occupied    PID     StartS     StartN\n");
     int i;
     for(i=0;i<20;i++){
-        printf("%i      %d          %ld     %i      %i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+        printf("%i\t\t %d\t\t\t%ld\t\t%i\t\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
     }
 }
