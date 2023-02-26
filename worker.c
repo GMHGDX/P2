@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
                 break;
             }
         }
-        if(checkSec == secPassed){
+        if(checkSec == sysClockS){
             printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, checkSec);
             printf("This is the sec increment: %i", checkSec);
             checkSec=+ 1;
