@@ -160,7 +160,7 @@ int main(int argc, char *argv[]){
             nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(1)*BILLION);
         }
 
-        printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
+        //printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
         //Write the seconds and nanoseconds to memory for children to read
         struct PCB writeToMem;
