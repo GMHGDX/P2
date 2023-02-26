@@ -178,6 +178,7 @@ int main(int argc, char *argv[]){
         //////////////////////////////////////////////////////////////////
         //fork child processes
         if (childrenToLaunch < proc){
+            sleep(1);
             childpid = fork();
             if (childpid == -1) {
                 perror("Failed to fork");
