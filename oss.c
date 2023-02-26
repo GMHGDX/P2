@@ -128,7 +128,7 @@ int main(int argc, char *argv[]){
     bool allChildrenHaveFinished = false;
 
     //Loop to check for terminated children
-    while (1) {
+    while(1) {
         if (childpid != 0){
             return_pid = waitpid(childpid, &status, WNOHANG); /* WNOHANG def'd in wait.h */
             if (return_pid == -1) {
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
         *shm_ptr = writeToMem;
         
         writeToMem = *shm_ptr;
-        // printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+        printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
         //////////////////////////////////////////////////////////////////
         //fork child processes
