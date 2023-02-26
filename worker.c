@@ -8,7 +8,6 @@ int main(int argc, char *argv[]){
     int termTimeNano;
     int sysClockS;
     int sysClockNano;
-    int secPassed;
     int checkSec = 0;
 
     int sh_key = atoi(argv[1]);
@@ -60,7 +59,6 @@ int main(int argc, char *argv[]){
         sysClockS = readFromMem.sec;
         sysClockNano = readFromMem.nano;
 
-        secPassed = sec - readFromMem.sec;
         if(termTimeS <= sysClockS){
             if (termTimeNano <= sysClockNano){
                 break;
@@ -69,7 +67,7 @@ int main(int argc, char *argv[]){
         if(checkSec == sysClockS){
             printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, checkSec);
             printf("This is the sec increment: %i", checkSec);
-            checkSec=+ 1;
+            checkSec++;
         }
     }
 
