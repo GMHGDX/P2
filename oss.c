@@ -154,18 +154,18 @@ int main(int argc, char *argv[]){
         sec = (stop.tv_sec - start.tv_sec);
         nano = (double)( stop.tv_nsec - start.tv_nsec);
 
-        // printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
+        printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
         //Write the seconds and nanoseconds to memory for children to read
         struct PCB writeToMem;
         writeToMem.sec = sec;
         writeToMem.nano = nano;
 
-        // printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+        //printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
         *shm_ptr = writeToMem;
         
         writeToMem = *shm_ptr;
-        printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
+        //printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
         //////////////////////////////////////////////////////////////////
         //fork child processes
