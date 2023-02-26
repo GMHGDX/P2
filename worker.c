@@ -58,6 +58,10 @@ int main(int argc, char *argv[]){
     printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n--Just Starting",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
 
     while(1){
+        sysClockS = readFromMem.sec;
+        sysClockNano = readFromMem.nano;
+
+        secPassed = sec - readFromMem.sec;
         if(termTimeS <= sysClockS){
             if (termTimeNano <= sysClockNano){
                 break;
