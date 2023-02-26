@@ -50,6 +50,14 @@ int main(int argc, char *argv[]){
     //child process ID
     pid_t childpid = 0;
 
+    int j;
+    for(j=0;j<20;j++){
+        processTable[j].nano = 0;
+        processTable[j].sec = 0;
+        processTable[j].pid = 0;
+        processTable[j].occupied = 0;
+    }
+
     //Parse through command line options
 	char opt;
     while((opt = getopt(argc, argv, "hn:s:t:")) != -1 )
@@ -140,7 +148,21 @@ int main(int argc, char *argv[]){
             } else if (return_pid >0) {
                 printf("\nThe return PID: %ld\n", return_pid);
                 //Child(ren) have finished, start new chilren if needed, exit program if all chlriren have finished
-                allChildrenHaveFinished = true;
+                for(i = 0; i < 20; i++){
+                    if(processTable[i].pid == return_pid){
+                        processTable[i].occupied = 0;
+                        printf("Set : %ld to 0\n", return_pid);
+                        break;
+                    }
+                }
+                for(i=0;i<20;i++){
+                    allChildrenHaveFinished = true;
+                    if(processTable[i].occupied == 1){
+                        allChildrenHaveFinished = false;
+                        break;
+                    }
+                }
+                printf("AllChilrenHaveFinishjed is %d\n", allChildrenHaveFinished);
             }
         }
 
@@ -178,7 +200,6 @@ int main(int argc, char *argv[]){
         //////////////////////////////////////////////////////////////////
         //fork child processes
         if (childrenToLaunch < proc){
-            sleep(1);
             childpid = fork();
             if (childpid == -1) {
                 perror("Failed to fork");
