@@ -151,8 +151,13 @@ int main(int argc, char *argv[]){
             perror( "clock gettime" );
             return EXIT_FAILURE;
         }
-        sec = (stop.tv_sec - start.tv_sec);
+        
+        sec = (stop.tv_sec - start.tv_sec); 
         nano = (double)( stop.tv_nsec - start.tv_nsec);
+        
+        if(start.tv_nsec > stop.tv_nsec){
+            nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(stop.tv_sec - start.tv_sec)*BILLION);
+        }
 
         printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
