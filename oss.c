@@ -189,12 +189,20 @@ int main(int argc, char *argv[]){
             nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(1)*BILLION);
         }
 
-        if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
+        
+        if(nano == BILLION/2){
             printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");
             printTable();
-            break; //program can end, all child processes are done
         }
+
+            //         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
+            //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
+            //     printf("Process Table:\n");
+            //     printTable();
+            //     break; //program can end, all child processes are done
+            // }
+
 
         //printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
