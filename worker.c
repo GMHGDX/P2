@@ -41,7 +41,7 @@ int main(int argc, char *argv[]){
 
     sysClockS = readFromMem.sec;
     sysClockNano = readFromMem.nano;
-    
+
     checkSec = sysClockS;
     
 
@@ -66,6 +66,9 @@ int main(int argc, char *argv[]){
             if (termTimeNano <= sysClockNano){
                 break;
             }
+        }
+        if(termTimeS < sysClockS){
+            break;
         }
         if(checkSec == sysClockS){
             printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, checkSec);
