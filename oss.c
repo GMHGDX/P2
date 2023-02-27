@@ -140,6 +140,8 @@ int main(int argc, char *argv[]){
 
     double currentTime, lastPrintTime=0;
 
+    sleep(2);
+
     //Loop to check for terminated children
     while(1) {
         if (childpid != 0){
