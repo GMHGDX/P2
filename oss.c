@@ -192,11 +192,12 @@ int main(int argc, char *argv[]){
         currentTime = sec + nano/BILLION;
         if(currentTime > (lastPrintTime + 0.5) || lastPrintTime == 0){
             lastPrintTime = currentTime;
-            printf("current children: %i and total %i\n\n\n", currentChildren, childrenToLaunch);
+            printf("current children: %i and total %i\n", currentChildren, childrenToLaunch);
 
             printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
-            printf("Process Table:\n");
-            printTable();
+            //printf("Process Table:\n");
+            //printTable();
+            printf("\n\n");
         }
 
         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
@@ -272,7 +273,7 @@ void printTable(){
     int i;
     for(i=0;i<20;i++){
         if(processTable[i].pid != 0 ){
-            printf("%i\t%d\t\t%ld\t\t%f\t\t%f\n", i, processTable[i].occupied, (long)processTable[i].pid, processTable[i].sec, processTable[i].nano);
+            printf("%i\t%d\t\t%ld\t\t%f\t%f\n", i, processTable[i].occupied, (long)processTable[i].pid, processTable[i].sec, processTable[i].nano);
         }
     }
 }
