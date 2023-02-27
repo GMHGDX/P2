@@ -137,6 +137,8 @@ int main(int argc, char *argv[]){
     pid_t return_pid;
     bool allChildrenHaveFinished = false;
 
+    double currentTime, lastPrintTime=0;
+
     //Loop to check for terminated children
     while(1) {
         if (childpid != 0){
@@ -189,21 +191,26 @@ int main(int argc, char *argv[]){
             nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(1)*BILLION);
         }
 
-        printf("HERE IS THE NANO: ", nano);
-
-        
-        if(nano == BILLION/2){
+        currentTime = sec + nano/BILLION;
+        if(currentTime > (lastPrintTime + 0.5) || lastPrintTime == 0){
+            lastPrintTime = currentTime;
             printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");
             printTable();
         }
+        
+        // if(nano == BILLION/2){
+        //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
+        //     printf("Process Table:\n");
+        //     printTable();
+        // }
 
-            //         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
+        if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
             //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
             //     printf("Process Table:\n");
             //     printTable();
-            //     break; //program can end, all child processes are done
-            // }
+            break; //program can end, all child processes are done
+        }
 
 
         //printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
@@ -272,9 +279,9 @@ return 0;
 
 
 void printTable(){
-    printf("Entry   Occupied    PID     StartS     StartN\n");
+    printf("Entry\tOccupied\tPID\t\tStartS\t\tStartN\n");
     int i;
     for(i=0;i<20;i++){
-        printf("%i\t %d\t\t%ld\t\t%i\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+        printf("%i\t%d\t%ld\t\t%i\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
     }
 }
