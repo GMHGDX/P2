@@ -15,7 +15,7 @@
 #include <sys/wait.h> //wait
 #include "oss.h"
 
-#define BILLION 1000000000L
+
 
 void printTable();
 

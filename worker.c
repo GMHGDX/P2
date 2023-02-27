@@ -38,6 +38,8 @@ int main(int argc, char *argv[]){
 
     termTimeS = readFromMem.sec + sec;
     termTimeNano = readFromMem.nano + nano;
+    int termTogether = termTimeS + termTimeNano/BILLION;
+
 
     sysClockS = readFromMem.sec;
     sysClockNano = readFromMem.nano;
@@ -54,6 +56,8 @@ int main(int argc, char *argv[]){
     // printf("termTimeNano: %i\n", termTimeNano);
     // printf("secPassed: %i\n\n", secPassed);
 
+    int currentTime;
+
 
     printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n--Just Starting\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano);
 
@@ -62,14 +66,21 @@ int main(int argc, char *argv[]){
         sysClockS = readFromMem.sec;
         sysClockNano = readFromMem.nano;
 
-        if(termTimeS <= sysClockS){
-            if (termTimeNano <= sysClockNano){
-                break;
-            }
-        }
-        if(termTimeS < sysClockS){
+        currentTime = sec + nano/BILLION;
+
+        if(currentTime > termTogether){
             break;
         }
+
+
+        // if(termTimeS <= sysClockS){
+        //     if (termTimeNano <= sysClockNano){
+        //         break;
+        //     }
+        // }
+        // if(termTimeS < sysClockS){
+        //     break;
+        // }
         if(checkSec == sysClockS){
             printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, checkSec);
             checkSec++;
