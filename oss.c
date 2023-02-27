@@ -59,6 +59,7 @@ int main(int argc, char *argv[]){
         processTable[j].pid = 0;
         processTable[j].occupied = 0;
     }
+    printTable();
 
     //Parse through command line options
 	char opt;
@@ -185,7 +186,6 @@ int main(int argc, char *argv[]){
         
         sec = (stop.tv_sec - start.tv_sec); 
         nano = (double)( stop.tv_nsec - start.tv_nsec);
-
         if(start.tv_nsec > stop.tv_nsec){
             sec = (stop.tv_sec - start.tv_sec) - 1;
             nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(1)*BILLION);
@@ -196,14 +196,8 @@ int main(int argc, char *argv[]){
             lastPrintTime = currentTime;
             printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");
-            printTable();
+            //printTable();
         }
-        
-        // if(nano == BILLION/2){
-        //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
-        //     printf("Process Table:\n");
-        //     printTable();
-        // }
 
         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
             //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
@@ -282,6 +276,6 @@ void printTable(){
     printf("Entry\tOccupied\tPID\t\tStartS\t\tStartN\n");
     int i;
     for(i=0;i<20;i++){
-        printf("%i\t%d\t%ld\t\t%i\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+        printf("%i\t%d\t\t%ld\t\t%i\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
     }
 }
