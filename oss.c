@@ -195,8 +195,8 @@ int main(int argc, char *argv[]){
             printf("current children: %i and total %i\n", currentChildren, childrenToLaunch);
 
             printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
-            //printf("Process Table:\n");
-            //printTable();
+            printf("Process Table:\n");
+            printTable();
             printf("\n\n");
         }
 
