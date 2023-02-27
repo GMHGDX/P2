@@ -137,6 +137,7 @@ int main(int argc, char *argv[]){
     int status;
     pid_t return_pid;
     bool allChildrenHaveFinished = false;
+    int currentChildren=0;
 
     double currentTime, lastPrintTime=0;
 
@@ -155,6 +156,7 @@ int main(int argc, char *argv[]){
             } else if (return_pid > 0) {
                 printf("\nThe return PID: %ld\n", (long)return_pid);
                 //Child(ren) have finished, start new chilren if needed, exit program if all chlriren have finished
+                currentChildren--;
                 for(i = 0; i < 20; i++){
                     if(processTable[i].pid == return_pid){
                         processTable[i].occupied = 0;
@@ -173,12 +175,6 @@ int main(int argc, char *argv[]){
             }
         }
 
-        // if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
-        //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
-        //     printf("Process Table:\n");
-        //     printTable();
-        //     break; //program can end, all child processes are done
-        // }
 
         //stop simulated system clock
         if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
@@ -202,29 +198,23 @@ int main(int argc, char *argv[]){
         }
 
         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
-                printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
-                printf("Process Table:\n");
-                printTable();
+            printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
+            printf("Process Table:\n");
+            printTable();
             break; //program can end, all child processes are done
         }
-
-
-        //printf("SysClockS: %lf SysClockNano: %lf \n", sec, nano);
 
         //Write the seconds and nanoseconds to memory for children to read
         struct PCB writeToMem;
         writeToMem.sec = sec;
         writeToMem.nano = nano;
-
         //printf("memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
         *shm_ptr = writeToMem;
-        
         writeToMem = *shm_ptr;
         //printf("Wrote to memory: memSec: %lf memNano: %lf \n", writeToMem.sec, writeToMem.nano);
     
-        //////////////////////////////////////////////////////////////////
         //fork child processes
-        if (childrenToLaunch < proc){
+        if (childrenToLaunch < proc && currentChildren < simul){
             childpid = fork();
             if (childpid == -1) {
                 perror("Failed to fork");
@@ -237,6 +227,7 @@ int main(int argc, char *argv[]){
             processTable[childrenToLaunch].sec = sec;
 
             childrenToLaunch++;
+            currentChildren++;
         }
     
         //send shared memory key to worker for children to use
