@@ -189,6 +189,8 @@ int main(int argc, char *argv[]){
             nano = (double)( stop.tv_nsec - start.tv_nsec) + ((double)(1)*BILLION);
         }
 
+        printf("HERE IS THE NANO: ", nano);
+
         
         if(nano == BILLION/2){
             printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
