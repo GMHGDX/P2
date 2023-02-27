@@ -194,7 +194,7 @@ int main(int argc, char *argv[]){
         currentTime = sec + nano/BILLION;
         if(currentTime > (lastPrintTime + 0.5) || lastPrintTime == 0){
             lastPrintTime = currentTime;
-            printf("OSS PID: %ld SysClockS: %d SysclockNano: %d\n", (long)getpid(), sec, nano);
+            printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");
             //printTable();
         }
