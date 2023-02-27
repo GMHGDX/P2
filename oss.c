@@ -175,7 +175,6 @@ int main(int argc, char *argv[]){
             }
         }
 
-        printf("current children: %i and total %i\n", currentChildren, childrenToLaunch);
 
         //stop simulated system clock
         if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
@@ -193,6 +192,8 @@ int main(int argc, char *argv[]){
         currentTime = sec + nano/BILLION;
         if(currentTime > (lastPrintTime + 0.5) || lastPrintTime == 0){
             lastPrintTime = currentTime;
+            printf("current children: %i and total %i\n\n\n", currentChildren, childrenToLaunch);
+
             printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");
             printTable();
