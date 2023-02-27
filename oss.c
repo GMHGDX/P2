@@ -140,7 +140,7 @@ int main(int argc, char *argv[]){
 
     double currentTime, lastPrintTime=0;
 
-    sleep(2);
+    //sleep(2);
 
     //Loop to check for terminated children
     while(1) {
@@ -202,9 +202,9 @@ int main(int argc, char *argv[]){
         }
 
         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
-            //     printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
-            //     printf("Process Table:\n");
-            //     printTable();
+                printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
+                printf("Process Table:\n");
+                printTable();
             break; //program can end, all child processes are done
         }
 
