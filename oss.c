@@ -54,8 +54,8 @@ int main(int argc, char *argv[]){
 
     int j;
     for(j=0;j<20;j++){
-        processTable[j].nano = 0;
-        processTable[j].sec = 0;
+        processTable[j].nano = (double)0;
+        processTable[j].sec = (double)0;
         processTable[j].pid = 0;
         processTable[j].occupied = 0;
     }
