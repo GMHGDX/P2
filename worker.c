@@ -41,6 +41,9 @@ int main(int argc, char *argv[]){
 
     sysClockS = readFromMem.sec;
     sysClockNano = readFromMem.nano;
+    
+    checkSec = sysClockS;
+    
 
     // printf("Child: Read Value - memSec: %lf memNano: %lf \n", readFromMem.sec, readFromMem.nano);
     // printf("when it will terminate sec + memsec: %ld", readFromMem.sec);
