@@ -151,12 +151,12 @@ int main(int argc, char *argv[]){
             } else if (return_pid == 0) {
                 //Child is still running, do nothing
             } else if (return_pid > 0) {
-                printf("\nThe return PID: %ld\n", return_pid);
+                printf("\nThe return PID: %ld\n", (long)return_pid);
                 //Child(ren) have finished, start new chilren if needed, exit program if all chlriren have finished
                 for(i = 0; i < 20; i++){
                     if(processTable[i].pid == return_pid){
                         processTable[i].occupied = 0;
-                        printf("Set : %ld to 0\n", return_pid);
+                        printf("Set : %ld to 0\n", (long)return_pid);
                         break;
                     }
                 }
@@ -194,7 +194,7 @@ int main(int argc, char *argv[]){
         currentTime = sec + nano/BILLION;
         if(currentTime > (lastPrintTime + 0.5) || lastPrintTime == 0){
             lastPrintTime = currentTime;
-            printf("OSS PID: %ld SysClockS: %i SysclockNano: %i\n", (long)getpid(), sec, nano);
+            printf("OSS PID: %ld SysClockS: %ld SysclockNano: %ld\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");
             //printTable();
         }
@@ -276,6 +276,6 @@ void printTable(){
     printf("Entry\tOccupied\tPID\t\tStartS\t\tStartN\n");
     int i;
     for(i=0;i<20;i++){
-        printf("%i\t%d\t\t%ld\t\t%i\t\t%i\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+        printf("%i\t%d\t\t%ld\t\t%ld\t\t%ld\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
     }
 }
