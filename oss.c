@@ -276,6 +276,6 @@ void printTable(){
     printf("Entry\tOccupied\tPID\t\tStartS\t\tStartN\n");
     int i;
     for(i=0;i<20;i++){
-        printf("%i\t%d\t\t%ld\t\t%ld\t\t%ld\n", i, processTable[i].occupied, processTable[i].pid, processTable[i].sec, processTable[i].nano);
+        printf("%i\t%d\t\t%ld\t\t%f\t\t%f\n", i, processTable[i].occupied, (long)processTable[i].pid, processTable[i].sec, processTable[i].nano);
     }
 }
