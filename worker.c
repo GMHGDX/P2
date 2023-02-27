@@ -66,7 +66,7 @@ int main(int argc, char *argv[]){
         sysClockS = readFromMem.sec;
         sysClockNano = readFromMem.nano;
 
-        currentTime = sec + nano/BILLION;
+        currentTime = sysClockS + sysClockNano/BILLION;
 
         if(currentTime > termTogether){
             break;
