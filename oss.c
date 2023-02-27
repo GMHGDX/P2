@@ -196,7 +196,7 @@ int main(int argc, char *argv[]){
             lastPrintTime = currentTime;
             printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");
-            //printTable();
+            printTable();
         }
 
         if((childrenToLaunch >= proc) && (allChildrenHaveFinished)){    //Check if all children have been created, check if all children have finished
