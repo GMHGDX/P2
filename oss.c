@@ -175,6 +175,7 @@ int main(int argc, char *argv[]){
             }
         }
 
+        printf("current children: %i and total %i\n", currentChildren, childrenToLaunch);
 
         //stop simulated system clock
         if( clock_gettime( CLOCK_REALTIME, &stop) == -1 ) {
