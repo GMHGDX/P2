@@ -8,7 +8,7 @@ compilation terminated.
 Preprocessed source stored into /tmp/ccCqZROP.out file, please attach this to your bugreport.
 
 Runs when I enter "make" a second time after getting this message
-----------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 To know how to run the project: 
 ./oss -h 
@@ -19,7 +19,9 @@ To run the project if you want to skip the help message:
 
 ^ (-s, -n, -t can be in any order) ^
 
+-----------------------------------------------------------------------------------------------------------------------------------------
 My GIT Repo:
+
 https://github.com/GMHGDX/P2
 -----------------------------------------------------------------------------------------------------------------------------------------
 
