@@ -224,7 +224,7 @@ int main(int argc, char *argv[]){
             currentChildren++;
         }
     
-        //send shared memory key to worker for children to use
+        //send shared memory key to worker for children to use 
         if (childpid == 0){ 
             char sh_key_string[50];
             char termSec_string[50];
