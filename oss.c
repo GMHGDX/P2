@@ -13,6 +13,7 @@
 #include <sys/shm.h> //Shared memory
 #include <stdbool.h> //bool values
 #include <sys/wait.h> //wait
+#include <string.h> //remedy exit warning
 #include "oss.h"
 
 
