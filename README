@@ -1,10 +1,21 @@
-Everything should be working properly, nothing special was added
+Everything should be working properly. Sometimes I get this message when I enter "make" in the command line: 
+
+In file included from <command-line>:0:0:
+/usr/include/stdc-predef.h:1:0: fatal error: can’t create precompiled header worker: Text file busy
+ /* Copyright (C) 1991-2012 Free Software Foundation, Inc.
+ ^
+compilation terminated.
+Preprocessed source stored into /tmp/ccCqZROP.out file, please attach this to your bugreport.
+
+Runs when I enter "make" a second time after getting this message
+----------------------------------------------------------------------------------------------------
 
 To know how to run the project: 
 ./oss -h 
 
 To run the project if you want to skip the help message:
-./oss -s # -n # -t #  
+1) make
+2) ./oss -s # -n # -t #  
 
 ^ (-s, -n, -t can be in any order) ^
 
