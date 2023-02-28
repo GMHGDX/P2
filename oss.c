@@ -190,7 +190,7 @@ int main(int argc, char *argv[]){
             printf("\n\n");
         }
 
-        //Check if all children have been created, check if all children have finished
+        //Check if all children have been created, check if all children have finished or if time has surpassed 60 seconds
         if(((childrenToLaunch >= proc) && (allChildrenHaveFinished)) || currentTime >= 60){    
             printf("OSS PID: %ld SysClockS: %f SysclockNano: %f\n", (long)getpid(), sec, nano);
             printf("Process Table:\n");

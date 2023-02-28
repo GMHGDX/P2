@@ -1,1 +1,23 @@
-T
+Everything should be working properly, nothing special was added
+
+To know how to run the project: 
+./oss -h 
+
+To run the project if you want to skip the help message:
+./oss -s # -n # -t #  
+
+^ (-s, -n, -t can be in any order) ^
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+Project details (for me to look back on):
+
+Creating a simulated system clock and wrote it to shared memory
+
+Fork children from oss to worker (given how many run simultaneously by user)and have them read the time from shared memory
+
+Loop for a random amount of time, sec and nanosec (within the bounds of user input), that was passed into worker
+
+Output information detailing the child(ren) process in oss every half a second until all have terminated or time has surpassed 60 seconds 
+

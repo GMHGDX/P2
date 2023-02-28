@@ -58,7 +58,6 @@ int main(int argc, char *argv[]){
             break;
         }
         if(checkSec == sysClockS){
-            printf("currentime %f, termTogether %f \n", currentTime, termTogether);
             printf("WORKER PID: %ld PPID: %ld SysClockS: %i SysclockNano: %i TermTimeS: %i TermTimeNano: %i\n --%i seconds has passed\n",(long)getpid(), (long)getppid(), sysClockS, sysClockNano, termTimeS, termTimeNano, checkSec);
             checkSec++;
         }
